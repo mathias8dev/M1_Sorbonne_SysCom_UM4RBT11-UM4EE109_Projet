@@ -1,9 +1,15 @@
 def run():
     import pygame
     import os
-    room_size = 90
     background_colour = (255,255,255)
-    (width, height) = (1800, room_size * 9 + 5)
+
+    pygame.init() 
+    desktop_size = pygame.display.get_desktop_sizes()[0]  # Returns a list of tuples 
+    
+    room_size = min(90,(desktop_size[1]- 200)/9)
+
+
+    (width, height) = (min(1800, desktop_size[0]- 50), room_size * 9 + 5)
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Blue Prince by KALIPE | DIALLO | MOUSTADRANE')
     screen.fill(background_colour)
