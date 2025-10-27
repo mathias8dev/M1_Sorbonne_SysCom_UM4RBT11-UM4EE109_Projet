@@ -4,9 +4,12 @@ def run():
 
     # Couleur de fond de la fenêtre
     background_colour = (255, 255, 255)
+    
 
     # Initialisation de pygame (doit être appelée avant d'utiliser les API pygame)
     pygame.init()
+    
+    game_font = pygame.font.SysFont('Arial', 30, True, False)
 
     # Récupère la taille du bureau/écran principal. pygame.display.get_desktop_sizes()
     # renvoie une liste de résolutions; on prend le premier élément.
@@ -29,12 +32,14 @@ def run():
     screen.fill(background_colour)
 
     # Définitions des couleurs pour la mise en page (gauche / droite)
-    left_side_color = (0, 0, 0)      # noir pour la partie gauche
-    right_side_color = (255, 255, 255)  # blanc pour la partie droite
+    white_color = (255, 255, 255)  # blanc pour la partie droite
+    black_color = (0, 0, 0)
+    
+    right_side_x = room_size * 5 + 5
 
     # Dessine deux rectangles couvrant l'écran pour créer un split gauche/droite
-    pygame.draw.rect(screen, left_side_color, pygame.Rect(0, 0, room_size * 5 + 5, height))
-    pygame.draw.rect(screen, right_side_color, pygame.Rect(room_size * 5 + 5, 0, width - (room_size * 5 + 5), height))
+    pygame.draw.rect(screen, black_color, pygame.Rect(0, 0, right_side_x, height))
+    pygame.draw.rect(screen, white_color, pygame.Rect(right_side_x, 0, width - right_side_x, height))
 
     # Construction du chemin vers le dossier assets à partir du fichier courant
     app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -58,6 +63,16 @@ def run():
         loaded_image = pygame.transform.scale(pygame.image.load(examples[i]).convert(), (room_size, room_size))
         # Position horizontale à 0 (gauche), verticale calculée par l'indice
         screen.blit(loaded_image, (0, room_size * i + 2))
+        
+    
+    # Création des surfaces
+    inventory_text = game_font.render("Inventory:", 1, black_color)
+    shovel_text = game_font.render("Shovel", 1, black_color)
+    metal_detector_text = game_font.render("Metal Detector", 1, black_color)
+    #  Transfert des surfaces dans la fenêtre principale
+    screen.blit(inventory_text, (right_side_x + 60, 70))
+    screen.blit(shovel_text, (right_side_x + 60, 120))
+    screen.blit(metal_detector_text, (right_side_x + 60, 170))
 
     # Met à jour l'affichage pour rendre visibles les dessins
     pygame.display.flip()
