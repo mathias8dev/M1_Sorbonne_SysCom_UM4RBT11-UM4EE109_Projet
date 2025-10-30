@@ -1,6 +1,9 @@
 def run():
     import pygame
     import os
+    from renderer import Renderer
+    from color import Color
+    from position import Position
 
     # Couleur de fond de la fenêtre
     background_colour = (255, 255, 255)
@@ -73,6 +76,9 @@ def run():
     screen.blit(inventory_text, (right_side_x + 60, 70))
     screen.blit(shovel_text, (right_side_x + 60, 120))
     screen.blit(metal_detector_text, (right_side_x + 60, 170))
+
+    renderer = Renderer(screen)
+    renderer.display_text("MATHIAS LE GITHUB MAN", Color(200,255,100), "Arial", 64 ,Position(right_side_x,0))
 
     # Met à jour l'affichage pour rendre visibles les dessins
     pygame.display.flip()
