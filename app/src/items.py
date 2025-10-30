@@ -24,6 +24,14 @@ class Food(Item) :
 class PermanentItem(Item):
     pass
 
+
+class Collectable(Item) :
+    def __init__(self, count : int = 1) :
+        super().__init__(count)
+    def use(self):
+        if self.count > 1 :
+            self.count = self.count - 1
+
 #---------------------------------------------SECTION : Consommation rapide ------------------------------------
 class Meal(Food):
     pass
@@ -58,4 +66,24 @@ class LockPickKit(PermanentItem):
 
 class RabbitFoot(PermanentItem):
     pass
+
+#------------------------------- SECTION :Collectable--------------------------------------
+
+
+class Step(Collectable):
+    pass
+
+class Coin(Collectable):
+    pass
+
+class Gem(Collectable):
+    pass
+
+class Key(Collectable):
+    pass
+
+class Dice(Collectable):
+    pass
+
+
 
