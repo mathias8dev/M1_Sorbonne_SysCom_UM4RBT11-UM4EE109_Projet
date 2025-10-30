@@ -4,6 +4,7 @@ def run():
     from renderer import Renderer
     from color import Color
     from position import Position
+    from rectangle import Rectangle
 
     # Couleur de fond de la fenêtre
     background_colour = (255, 255, 255)
@@ -79,7 +80,7 @@ def run():
 
     renderer = Renderer(screen)
     renderer.display_text("MATHIAS LE GITHUB MAN", Color(200,255,100), "Arial", 64 ,Position(right_side_x,0))
-
+    renderer.draw_image("C:/Users/Surface/Desktop/Annee_2025_2026/Universite/Projet_python/M1_Sorbonne_SysCom_UM4RBT11-UM4EE109_Projet/app/assets/drawables/dice.webp",Rectangle(180,180,right_side_x,76))
     # Met à jour l'affichage pour rendre visibles les dessins
     pygame.display.flip()
 
