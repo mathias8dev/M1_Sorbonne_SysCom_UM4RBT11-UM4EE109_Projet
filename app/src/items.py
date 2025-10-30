@@ -21,6 +21,8 @@ class Food(Item) :
         if self.count > 1 :
             self.count = self.count - 1
 
+class PermanentItem(Item):
+    pass
 
 #---------------------------------------------SECTION : Consommation rapide ------------------------------------
 class Meal(Food):
@@ -39,4 +41,21 @@ class Cake(Food):
     pass
 
 
-        
+#------------------------------- SECTION :Permananent  Items--------------------------------------
+
+
+class MetalDetector(PermanentItem):
+    pass
+
+class Shovel(PermanentItem):
+    pass
+
+class Hammer(PermanentItem):
+    pass
+
+class LockPickKit(PermanentItem):
+    pass
+
+class RabbitFoot(PermanentItem):
+    pass
+
