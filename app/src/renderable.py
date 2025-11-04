@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
+from renderer import Renderer
 
-if TYPE_CHECKING:
-    from player import Player # Gestion de la dépendance circulaire pour eviter les conflits entre les fichiers
-    from renderer import * 
+
 
 class Renderable(ABC):
     """ Classe de base abstraite pour tout objet qui peut se rendre sur l'ecran. """

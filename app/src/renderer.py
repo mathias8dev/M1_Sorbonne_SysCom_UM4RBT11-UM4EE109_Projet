@@ -6,7 +6,7 @@ from rectangle import Rectangle
 
 
 class Renderer:
-    def __init__(self, screen):
+    def __init__(self, screen: pygame.surface.Surface):
         self.screen = screen
 
     def display_text(
