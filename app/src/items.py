@@ -10,17 +10,24 @@ class Item(ABC):
     """ Classe de base abstraite pour tous les items. """
     def __init__(self, count : int):
         self.count = count
-    def use(self):
+    def use(self) -> bool:
         pass 
-
+    
+    def add(self, count : int):
+        self.count += count
+        
+    
 class Food(Item) :
     def __init__(self, count : int = 1, add_step : int = 0) :
         super().__init__(count)
         self.add_step = add_step
-    def use(self):
+    def use(self) -> bool:
         if self.count > 1 :
             self.count = self.count - 1
-
+            return True
+        return False
+    
+            
 class PermanentItem(Item):
     pass
 
@@ -28,25 +35,32 @@ class PermanentItem(Item):
 class Collectable(Item) :
     def __init__(self, count : int = 1) :
         super().__init__(count)
-    def use(self):
-        if self.count > 1 :
+    def use(self) -> bool:
+        if self.count > 0 :
             self.count = self.count - 1
+            return True
+        return False
 
 #---------------------------------------------SECTION : Consommation rapide ------------------------------------
 class Meal(Food):
-    pass
+    def __init__(self, count : int = 1, add_step : int = 25) :
+        super().__init__(count, add_step)
 
 class Banana(Food):
-    pass
+    def __init__(self, count : int = 1, add_step : int = 3) :
+        super().__init__(count, add_step)
 
 class Sandwich(Food):
-    pass
+    def __init__(self, count : int = 1, add_step : int = 15) :
+        super().__init__(count, add_step)
 
 class Apple(Food):
-    pass
+    def __init__(self, count : int = 1, add_step : int = 2) :
+        super().__init__(count, add_step)
 
 class Cake(Food):
-    pass
+    def __init__(self, count : int = 1, add_step : int = 10) :
+        super().__init__(count, add_step)
 
 
 #------------------------------- SECTION :Permananent  Items--------------------------------------

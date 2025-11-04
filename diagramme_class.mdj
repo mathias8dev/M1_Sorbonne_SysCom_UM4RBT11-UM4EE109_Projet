@@ -484,7 +484,7 @@
 											"top": 286,
 											"width": 161.0498046875,
 											"height": 13,
-											"text": "+steps: int = 70",
+											"text": "+inventory: Map",
 											"horizontalAlignment": 0
 										},
 										{
@@ -854,7 +854,25 @@
 											"top": 813,
 											"width": 159,
 											"height": 13,
-											"text": "+use()",
+											"text": "+use(): bool",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGaURjPXgwm42k=",
+											"_parent": {
+												"$ref": "AAAAAAGaLHA25Axqvtk="
+											},
+											"model": {
+												"$ref": "AAAAAAGaURjPVwwjgG8="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 973,
+											"top": 828,
+											"width": 159,
+											"height": 13,
+											"text": "+add(count : int)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -863,7 +881,7 @@
 									"left": 968,
 									"top": 808,
 									"width": 169,
-									"height": 23
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -12872,6 +12890,37 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGaUOuYKP480RM="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGaUPKrwS+9fGo=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 672,
+							"top": 112,
+							"width": 70,
+							"height": 77,
+							"text": "Map est une map de String et de Item"
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAGaUPNxYjcCMto=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"head": {
+								"$ref": "AAAAAAGaLHARXgw5Cjw="
+							},
+							"tail": {
+								"$ref": "AAAAAAGaUPKrwS+9fGo="
+							},
+							"lineStyle": 1,
+							"points": "714:190;726:255"
 						}
 					]
 				},
@@ -13278,9 +13327,10 @@
 							"_parent": {
 								"$ref": "AAAAAAGaLHARXQw3cZI="
 							},
-							"name": "steps",
-							"type": "int",
-							"defaultValue": "70"
+							"name": "inventory",
+							"type": {
+								"$ref": "AAAAAAGaLHCVwQzfTJA="
+							}
 						},
 						{
 							"_type": "UMLAttribute",
@@ -13427,7 +13477,37 @@
 							"_parent": {
 								"$ref": "AAAAAAGaLHA24wxhLuA="
 							},
-							"name": "use"
+							"name": "use",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGaUQ7GTLjeR40=",
+									"_parent": {
+										"$ref": "AAAAAAGaLILNqCUBDtE="
+									},
+									"type": "bool",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGaURjPVwwjgG8=",
+							"_parent": {
+								"$ref": "AAAAAAGaLHA24wxhLuA="
+							},
+							"name": "add",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGaURklmRJ/fGk=",
+									"_parent": {
+										"$ref": "AAAAAAGaURjPVwwjgG8="
+									},
+									"name": "count ",
+									"type": "int"
+								}
+							]
 						}
 					]
 				},
@@ -14910,5 +14990,6 @@
 				}
 			]
 		}
-	]
+	],
+	"documentVersion": 1
 }
