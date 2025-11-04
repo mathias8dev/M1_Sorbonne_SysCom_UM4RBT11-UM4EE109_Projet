@@ -36,14 +36,20 @@ def run():
     screen.fill(background_colour)
 
     # Définitions des couleurs pour la mise en page (gauche / droite)
-    white_color = (255, 255, 255)  # blanc pour la partie droite
-    black_color = (0, 0, 0)
+    white_color_tuple = (255, 255, 255)  # blanc pour la partie droite
+    black_color_tuple = (0, 0, 0)
+    white_color = Color(255, 255, 255)
+    black_color = Color(0, 0, 0)
     
     right_side_x = room_size * 5 + 5
+    
+    renderer = Renderer(screen)
 
     # Dessine deux rectangles couvrant l'écran pour créer un split gauche/droite
-    pygame.draw.rect(screen, black_color, pygame.Rect(0, 0, right_side_x, height))
-    pygame.draw.rect(screen, white_color, pygame.Rect(right_side_x, 0, width - right_side_x, height))
+    
+    renderer.draw_rectangle(Rectangle(x = 0, y = 0, width = right_side_x, height = height), fill_color=black_color)
+    renderer.draw_rectangle(Rectangle(x = right_side_x, y = 0, width = width - right_side_x, height = height), fill_color=white_color)
+    
 
     # Construction du chemin vers le dossier assets à partir du fichier courant
     app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,17 +76,17 @@ def run():
         
     
     # Création des surfaces
-    inventory_text = game_font.render("Inventory:", 1, black_color)
-    shovel_text = game_font.render("Shovel", 1, black_color)
-    metal_detector_text = game_font.render("Metal Detector", 1, black_color)
+    inventory_text = game_font.render("Inventory:", 1, black_color_tuple)
+    shovel_text = game_font.render("Shovel", 1, black_color_tuple)
+    metal_detector_text = game_font.render("Metal Detector", 1, black_color_tuple)
     #  Transfert des surfaces dans la fenêtre principale
     screen.blit(inventory_text, (right_side_x + 60, 70))
     screen.blit(shovel_text, (right_side_x + 60, 120))
     screen.blit(metal_detector_text, (right_side_x + 60, 170))
 
-    renderer = Renderer(screen)
+    
     renderer.display_text("MATHIAS LE GITHUB MAN", Color(200,255,100), "Arial", 64 ,Position(right_side_x,0))
-    renderer.draw_image("C:/Users/Surface/Desktop/Annee_2025_2026/Universite/Projet_python/M1_Sorbonne_SysCom_UM4RBT11-UM4EE109_Projet/app/assets/drawables/dice.webp",Rectangle(180,180,right_side_x,76))
+    renderer.draw_image("app/assets/drawables/dice.webp",Rectangle(180,180,right_side_x,76))
     # Met à jour l'affichage pour rendre visibles les dessins
     pygame.display.flip()
 
