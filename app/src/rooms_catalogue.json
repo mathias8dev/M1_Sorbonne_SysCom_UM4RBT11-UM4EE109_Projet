@@ -16,5 +16,101 @@
       "type": "none"
     },
     "placement_condition": "start_only"
+  },
+
+  {
+    "name": "Attic",
+    "image": "app/assets/rooms/001-012/Attic_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "color": "blue",
+    "gem_cost": 3,
+    "rarity": 2,
+    "items": [
+      { "item_name": "Pièce d'or", "quantity": 5, "probability": 0.5 },
+      { "item_name": "Pièce d'or", "quantity": 5, "probability": 0.5 },
+      { "item_name": "Gemme", "quantity": 1, "probability": 0.5 },
+      { "item_name": "Clé", "quantity": 1, "probability": 0.5 },
+      { "item_name": "Pomme", "quantity": 1, "probability": 0.5 },
+      { "item_name": "Banane", "quantity": 1, "probability": 0.5 },
+      { "item_name": "Coffre", "quantity": 1, "probability": 0.25 },
+      { "item_name": "Endroit où creuser", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "none"
+    },
+    "placement_condition": "any"
+  }, 
+
+  {
+    "name": "Billiard Room",
+    "image": "app/assets/rooms/001-012/Billiard_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "none"
+    },
+    "placement_condition": "any"
   }
+  ,
+  {
+    "name": "Closet",
+    "image": "app/assets/rooms/001-012/Closet_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_name": "Pièce d'or", "quantity": 5, "probability": 0.5 },
+      { "item_name": "Clé", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "none"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Gallery",
+    "image": "app/assets/rooms/001-012/Gallery_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "none"
+    },
+    "placement_condition": "any"
+  }
+
+
+
+
+
+
+
+
 ]
