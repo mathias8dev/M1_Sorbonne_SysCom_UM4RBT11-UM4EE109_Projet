@@ -42,3 +42,5 @@ class Renderer:
                 int(stroke_width),
             )
         
+    def flip(self):
+        pygame.display.flip()
