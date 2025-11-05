@@ -55,3 +55,16 @@ class player:
             
         if isinstance(item, Food) : 
             self.inventory.update({InventoryKey.STEP : self.inventory[InventoryKey.STEP].add(item.add_step)})
+
+    def use_item(self) -> bool:
+        """Use the currently selected item, if any."""
+        if self.current_selected_item:
+            return self.current_selected_item.use()
+        return False
+
+    def select_item(self, item_key: InventoryKey):
+        """Select an item from the inventory."""
+        self.current_selected_item = self.inventory.get(item_key, None)
+    def get_stats(self) -> Dict[InventoryKey, Item]:
+        """Return a dictionary of the player's stats."""
+        return self.inventory

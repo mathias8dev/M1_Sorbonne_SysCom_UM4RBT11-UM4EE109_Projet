@@ -29,7 +29,9 @@ class Food(Item) :
     
             
 class PermanentItem(Item):
-    pass
+    
+    def use(self) -> bool:
+        return True
 
 
 class Collectable(Item) :
