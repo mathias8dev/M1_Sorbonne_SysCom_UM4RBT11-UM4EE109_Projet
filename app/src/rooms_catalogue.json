@@ -104,12 +104,182 @@
       "type": "none"
     },
     "placement_condition": "any"
-  }
+  },
 
+  {
+  "name": "Bedroom",
+  "image": "app/assets/rooms/Bedrooms/Bedroom_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": false,
+    "left": true,
+    "right": false
+  },
+  "gem_cost": 1,
+  "rarity": 1,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "gain_on_enter",
+    "resource": "steps",
+    "amount": 2
+  },
+  "placement_condition": "any"
+},
 
+{
+  "name": "Boudoir",
+  "image": "app/assets/rooms/Bedrooms/Boudoir_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": true,
+    "right": true
+  },
+  "gem_cost": 1,
+  "rarity": 1,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "none"
+  },
+  "placement_condition": "any"
+},
+{
+  "name": "Bunk Room",
+  "image": "app/assets/rooms/Bedrooms/Bunk_Room_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 1,
+  "rarity": 1,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "counts_as_room",
+    "room_name": "Bedroom",
+    "count": 2
+  },
+  "placement_condition": "any"
+},
+{
+  "name": "Guest Bedroom",
+  "image": "app/assets/rooms/Bedrooms/Guest_Bedroom_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 1,
+  "rarity": 1,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "gain_on_draw",
+    "resource": "steps",
+    "amount": 10
+  },
+  "placement_condition": "any"
+},
 
+{
+  "name": "Her Ladyship's Chamber",
+  "image": "app/assets/rooms/Bedrooms/Her_Ladyship%27s_Chamber_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 2,
+  "rarity": 2,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "apply_future_bonus",
+    "bonuses": [
+      {
+        "trigger_room": "Boudoir",
+        "resource": "steps",
+        "amount": 10
+      },
+      {
+        "trigger_room": "Walk-In Closet",
+        "resource": "gems",
+        "amount": 3
+      }
+    ]
+  },
+  "placement_condition": "any"
+},
 
-
+{
+  "name": "Master Bedroom",
+  "image": "app/assets/rooms/Bedrooms/Master_Bedroom_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 2,
+  "rarity": 2,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "gain_on_draw_scaling",
+    "resource": "steps",
+    "amount_per": 1,
+    "scale_with": "total_rooms"
+  },
+  "placement_condition": "any"
+},
+{
+  "name": "Nursery",
+  "image": "app/assets/rooms/Bedrooms/Nursery_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 1,
+  "rarity": 1,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "persistent_gain_on_draft",
+    "trigger_room_name": "Bedroom",
+    "resource": "steps",
+    "amount": 5
+  },
+  "placement_condition": "any"
+},
+{
+  "name": "Servant's Quarters",
+  "image": "app/assets\rooms/Bedrooms/Servant%27s_Quarters_Icon.webp",
+  "doors": {
+    "top": false,
+    "bottom": true,
+    "left": false,
+    "right": false
+  },
+  "gem_cost": 2,
+  "rarity": 2,
+  "color": "purple",
+  "items": [],
+  "special_effect": {
+    "type": "gain_on_draw_scaling",
+    "resource": "keys",
+    "amount_per": 1,
+    "scale_with": "Bedroom"
+  },
+  "placement_condition": "any"
+}
 
 
 
