@@ -8,6 +8,8 @@
       "left": true,
       "right": true
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "gem_cost": 0,
     "rarity": 0,
     "color": "blue",
@@ -28,6 +30,8 @@
       "left": true,
       "right": true
     },
+    "doors_lock": true,
+    "lock_level": 2,
     "color": "blue",
     "gem_cost": 0,
     "rarity": 1,
@@ -47,16 +51,18 @@
       "left": false,
       "right": false
     },
+    "doors_lock": true,
+    "lock_level": 2,
     "color": "blue",
     "gem_cost": 2,
     "rarity": 2,
     "items": [
-      { "item_name": "Pièce d'or", "quantity": 8, "probability": 0.7 },
-      { "item_name": "Gemme", "quantity": 1, "probability": 0.4 },
-      { "item_name": "Clé", "quantity": 1, "probability": 0.5 },
-      { "item_name": "Pomme", "quantity": 1, "probability": 0.3 },
-      { "item_name": "Coffre", "quantity": 1, "probability": 0.25 },
-      { "item_name": "Endroit où creuser", "quantity": 1, "probability": 0.2 }
+      { "item_key": "Gold", "quantity": 8, "probability": 0.7 },
+      { "item_key": "Gem", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.5 },
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Chest", "quantity": 1, "probability": 0.25 },
+      { "item_key": "Digging_Spot", "quantity": 1, "probability": 0.2 }
     ],
     "special_effect": {
       "type": "treasure_room",
@@ -73,12 +79,14 @@
       "left": false,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "color": "blue",
     "gem_cost": 0,
     "rarity": 0,
     "items": [
-      { "item_name": "Pièce d'or", "quantity": 5, "probability": 0.5 },
-      { "item_name": "Clé", "quantity": 1, "probability": 0.25 }
+      { "item_key": "Gold", "quantity": 5, "probability": 0.5 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
     ],
     "special_effect": {
       "type": "storage",
@@ -95,11 +103,13 @@
       "left": true,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "color": "orange",
     "gem_cost": 0,
     "rarity": 0,
     "items": [
-      { "item_name": "Pièce d'or", "quantity": 3, "probability": 0.3 }
+      { "item_key": "Gold", "quantity": 3, "probability": 0.3 }
     ],
     "special_effect": {
       "type": "corridor_bonus",
@@ -116,11 +126,13 @@
       "left": true,
       "right": true
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "color": "orange",
     "gem_cost": 0,
     "rarity": 0,
     "items": [
-      { "item_name": "Gemme", "quantity": 1, "probability": 0.2 }
+      { "item_key": "Gem", "quantity": 1, "probability": 0.2 }
     ],
     "special_effect": {
       "type": "corridor_bonus",
@@ -137,11 +149,13 @@
       "left": true,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "color": "orange",
     "gem_cost": 0,
     "rarity": 0,
     "items": [
-      { "item_name": "Clé", "quantity": 1, "probability": 0.25 }
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
     ],
     "special_effect": {
       "type": "corridor_bonus",
@@ -158,6 +172,8 @@
       "left": true,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
     "color": "orange",
     "gem_cost": 0,
     "rarity": 0,
@@ -178,11 +194,13 @@
       "left": true,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 1,
     "rarity": 1,
-    "color": "purple",
     "items": [
-      { "item_name": "Pomme", "quantity": 1, "probability": 0.3 }
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 }
     ],
     "special_effect": {
       "type": "gain_steps",
@@ -200,11 +218,13 @@
       "left": true,
       "right": true
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 1,
     "rarity": 1,
-    "color": "purple",
     "items": [
-      { "item_name": "Miroir", "quantity": 1, "probability": 0.4 }
+      { "item_key": "Mirror", "quantity": 1, "probability": 0.4 }
     ],
     "special_effect": {
       "type": "gain_steps",
@@ -222,13 +242,15 @@
       "left": false,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 1,
     "rarity": 1,
-    "color": "purple",
     "items": [],
     "special_effect": {
       "type": "double_bedroom",
-      "description": "Dortoir - compte comme deux chambres"
+      "description": "Chambre à lits superposés - compte pour 2 chambres"
     },
     "placement_condition": "any"
   },
@@ -241,11 +263,13 @@
       "left": false,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 1,
     "rarity": 1,
-    "color": "purple",
     "items": [
-      { "item_name": "Clé", "quantity": 1, "probability": 0.2 }
+      { "item_key": "Key", "quantity": 1, "probability": 0.2 }
     ],
     "special_effect": {
       "type": "gain_steps_on_draw",
@@ -263,11 +287,13 @@
       "left": false,
       "right": false
     },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "purple",
     "gem_cost": 2,
     "rarity": 2,
-    "color": "purple",
     "items": [
-      { "item_name": "Bijou", "quantity": 1, "probability": 0.5 }
+      { "item_key": "Jewel", "quantity": 1, "probability": 0.5 }
     ],
     "special_effect": {
       "type": "noble_chamber",
@@ -285,11 +311,13 @@
       "left": false,
       "right": false
     },
+    "doors_lock": true,
+    "lock_level": 1,
+    "color": "purple",
     "gem_cost": 2,
     "rarity": 2,
-    "color": "purple",
     "items": [
-      { "item_name": "Pièce d'or", "quantity": 10, "probability": 0.6 }
+      { "item_key": "Gold", "quantity": 10, "probability": 0.6 }
     ],
     "special_effect": {
       "type": "scaling_steps",
@@ -307,11 +335,13 @@
       "left": false,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 1,
     "rarity": 1,
-    "color": "purple",
     "items": [
-      { "item_name": "Jouet", "quantity": 1, "probability": 0.4 }
+      { "item_key": "Toy", "quantity": 1, "probability": 0.4 }
     ],
     "special_effect": {
       "type": "bedroom_synergy",
@@ -329,18 +359,69 @@
       "left": false,
       "right": false
     },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
     "gem_cost": 2,
     "rarity": 2,
-    "color": "purple",
     "items": [
-      { "item_name": "Clé", "quantity": 2, "probability": 0.5 }
+      { "item_key": "Key", "quantity": 2, "probability": 0.5 }
     ],
     "special_effect": {
       "type": "servant_bonus",
       "description": "Quartiers des domestiques - génère des clés selon le nombre de chambres"
     },
     "placement_condition": "any"
+  },
+  {
+    "name": "Rotunda",
+    "image": "app/assets/rooms/001-012/Rotunda_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gem", "quantity": 1, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "rotation",
+      "description": "Rotonde - peut faire tourner le manoir pour changer les connexions"
+    },
+    "placement_condition": "center_preferred"
+  },
+  {
+    "name": "Spare Room",
+    "image": "app/assets/rooms/001-012/Spare_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Chest", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Gold", "quantity": 3, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "storage_room",
+      "description": "Chambre de réserve - contient des objets stockés et récupère des pas"
+    },
+    "placement_condition": "any"
   }
 
-  
+
+
 ]
