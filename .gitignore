@@ -11,3 +11,5 @@ ENV/
 PythonImportHelper**
 .idea
 .vscode
+features_implemented.md
+image.png
