@@ -1,0 +1,1878 @@
+[
+  {
+    "name": "Entrance Hall",
+    "image": "app/assets/rooms/001-012/Entrance_Hall_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "gem_cost": 0,
+    "rarity": 0,
+    "color": "blue",
+    "items": [],
+    "special_effect": {
+      "type": "start_room",
+      "description": "Pièce de départ du manoir"
+    },
+    "placement_condition": "start_only"
+  },
+  {
+    "name": "Parlor",
+    "image": "app/assets/rooms/001-012/Parlor_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Salon - pièce de passage"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Room 8",
+    "image": "app/assets/rooms/001-012/Room_8_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Couloir de passage"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Attic",
+    "image": "app/assets/rooms/001-012/Attic_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gold", "quantity": 8, "probability": 0.7 },
+      { "item_key": "Gem", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.5 },
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Chest", "quantity": 1, "probability": 0.25 },
+      { "item_key": "Digging_Spot", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "treasure_room",
+      "description": "Grenier - contient souvent des objets de valeur cachés"
+    },
+    "placement_condition": "edge_only"
+  },
+  {
+    "name": "Closet",
+    "image": "app/assets/rooms/001-012/Closet_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 5, "probability": 0.5 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "storage",
+      "description": "Placard - contient des objets utiles"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Billiard Room",
+    "image": "app/assets/rooms/001-012/Billiard_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 3, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Salle de billard - facilite les déplacements"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Gallery",
+    "image": "app/assets/rooms/001-012/Gallery_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gem", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Galerie - beaucoup de portes pour faciliter l'exploration"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Antechamber",
+    "image": "app/assets/rooms/037-046/Antechamber_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "victory",
+      "description": "Atteindre cette pièce termine le jeu avec succès"
+    },
+    "placement_condition": "end_only"
+  },
+  
+  
+
+  {
+    "name": "Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "gain_steps",
+      "amount": 2,
+      "description": "Chambre - permet de récupérer des pas"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Boudoir",
+    "image": "app/assets/rooms/Bedrooms/Boudoir_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Mirror", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "gain_steps",
+      "amount": 1,
+      "description": "Boudoir - chambre élégante qui redonne de l'énergie"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Bunk Room",
+    "image": "app/assets/rooms/Bedrooms/Bunk_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "double_bedroom",
+      "description": "Chambre à lits superposés - compte pour 2 chambres"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Guest Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Guest_Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "gain_steps_on_draw",
+      "amount": 10,
+      "description": "Chambre d'invité - donne des pas quand tirée"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Her Ladyship's Chamber",
+    "image": "app/assets/rooms/Bedrooms/Her_Ladyship%27s_Chamber_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Jewel", "quantity": 1, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "noble_chamber",
+      "description": "Chambre de Madame - effets bonus avec d'autres pièces nobles"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Master Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Master_Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 1,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gold", "quantity": 10, "probability": 0.6 }
+    ],
+    "special_effect": {
+      "type": "scaling_steps",
+      "description": "Chambre principale - plus de pièces = plus de pas"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Nursery",
+    "image": "app/assets/rooms/Bedrooms/Nursery_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Toy", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "bedroom_synergy",
+      "description": "Nurserie - bonus quand d'autres chambres sont tirées"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Servant's Quarters",
+    "image": "app/assets/rooms/Bedrooms/Servant%27s_Quarters_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Key", "quantity": 2, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "servant_bonus",
+      "description": "Quartiers des domestiques - génère des clés selon le nombre de chambres"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Rotunda",
+    "image": "app/assets/rooms/001-012/Rotunda_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "rotation",
+      "description": "Rotonde - peut pivoter pour changer les connexions"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Spare Room",
+    "image": "app/assets/rooms/001-012/Spare_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 2, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "storage",
+      "description": "Pièce de rechange - contient quelques objets"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Storeroom",
+    "image": "app/assets/rooms/001-012/Storeroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 1, "probability": 0.5 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Apple", "quantity": 1, "probability": 0.2 },
+      { "item_key": "Gem", "quantity": 1, "probability": 0.1 }
+    ],
+    "special_effect": {
+      "type": "storage",
+      "description": "Débarras - contient des objets variés"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "The Foundation",
+    "image": "app/assets/rooms/001-012/The_Foundation_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "no_reset",
+      "description": "Les Fondations - ne se réinitialise pas chaque jour"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Walk-in Closet",
+    "image": "app/assets/rooms/001-012/Walk-in_Closet_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Gold", "quantity": 4, "probability": 0.6 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "multi_items",
+      "description": "Dressing - contient 4 objets"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Ballroom",
+    "image": "app/assets/rooms/013-024/Ballroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "gem_bonus",
+      "description": "Salle de bal - met vos gemmes à 2 en entrant"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Den",
+    "image": "app/assets/rooms/013-024/Den_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gem", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "rest",
+      "description": "Bureau - pièce de repos"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Garage",
+    "image": "app/assets/rooms/013-024/Garage_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Key", "quantity": 3, "probability": 0.6 }
+    ],
+    "special_effect": {
+      "type": "key_storage",
+      "description": "Garage - contient des clés"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Locker Room",
+    "image": "app/assets/rooms/013-024/Locker_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "spread",
+      "description": "Vestiaire - propage les objets dans la maison"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Music Room",
+    "image": "app/assets/rooms/013-024/Music_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "key_reward",
+      "description": "Salle de musique - récompense 1 clé majeure et 1 clé mineure"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Nook",
+    "image": "app/assets/rooms/013-024/Nook_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "reading_nook",
+      "description": "Coin lecture - petit espace confortable"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Office",
+    "image": "app/assets/rooms/013-024/Office_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "earn_and_spread",
+      "description": "Bureau - opportunité de gagner et propager de l'or"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Pantry",
+    "image": "app/assets/rooms/013-024/Pantry_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 4, "probability": 0.6 }
+    ],
+    "special_effect": {
+      "type": "food_storage",
+      "description": "Garde-manger - stocke de la nourriture et de l'or"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Rumpus Room",
+    "image": "app/assets/rooms/013-024/Rumpus_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Gold", "quantity": 8, "probability": 0.7 }
+    ],
+    "special_effect": {
+      "type": "recreation",
+      "description": "Salle de jeux - pièce de loisirs avec beaucoup d'or"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Trophy Room",
+    "image": "app/assets/rooms/013-024/Trophy_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gem", "quantity": 8, "probability": 0.8 }
+    ],
+    "special_effect": {
+      "type": "trophy_collection",
+      "description": "Salle des trophées - contient des gemmes précieuses"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Vault",
+    "image": "app/assets/rooms/013-024/Vault_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gold", "quantity": 40, "probability": 0.9 }
+    ],
+    "special_effect": {
+      "type": "treasure_vault",
+      "description": "Coffre-fort - contient une grande quantité d'or"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Wine Cellar",
+    "image": "app/assets/rooms/013-024/Wine_Cellar_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Gem", "quantity": 3, "probability": 0.6 }
+    ],
+    "special_effect": {
+      "type": "wine_collection",
+      "description": "Cave à vin - contient des gemmes précieuses"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Boiler Room",
+    "image": "app/assets/rooms/025-036/Boiler_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "power_source",
+      "description": "Chaufferie - source d'énergie pour la maison"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Chamber of Mirrors",
+    "image": "app/assets/rooms/025-036/Chamber_of_Mirrors_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "duplicate_rooms",
+      "description": "Chambre des miroirs - permet de tirer des copies de pièces"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Drafting Studio",
+    "image": "app/assets/rooms/025-036/Drafting_Studio_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "permanent_floorplan",
+      "description": "Studio de dessin - ajoute un plan de maison permanent"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Drawing Room",
+    "image": "app/assets/rooms/025-036/Drawing_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "draw_while_drafting",
+      "description": "Salon de dessin - permet de tirer de nouveaux plans"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Laboratory",
+    "image": "app/assets/rooms/025-036/Laboratory_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "experimental_features",
+      "description": "Laboratoire - fonctionnalités expérimentales de la maison"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Library",
+    "image": "app/assets/rooms/025-036/Library_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "rare_floorplans",
+      "description": "Bibliothèque - découvrir des plans moins communs"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Pump Room",
+    "image": "app/assets/rooms/025-036/Pump_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "water_control",
+      "description": "Salle des pompes - contrôle le flux d'eau dans le domaine"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Security",
+    "image": "app/assets/rooms/025-036/Security_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "inventory_view",
+      "description": "Sécurité - voir l'inventaire de tous les objets dans la maison"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Study",
+    "image": "app/assets/rooms/025-036/Study_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "gem_redraw",
+      "description": "Bureau d'étude - dépenser des gemmes pour retirer jusqu'à 8 fois"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "The Pool",
+    "image": "app/assets/rooms/025-036/The_Pool_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "add_rooms_to_pool",
+      "description": "La piscine - ajoute vestiaire, sauna et salle des pompes"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Utility Closet",
+    "image": "app/assets/rooms/025-036/Utility_Closet_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "breaker_box",
+      "description": "Placard utilitaire - boîte à fusibles"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Workshop",
+    "image": "app/assets/rooms/025-036/Workshop_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "crafting",
+      "description": "Atelier - combiner l'inventaire pour créer de nouveaux objets"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Aquarium",
+    "image": "app/assets/rooms/037-046/Aquarium_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "multicolor",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "all_colors",
+      "description": "Aquarium - est de toutes les couleurs de pièces"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Coat Check",
+    "image": "app/assets/rooms/037-046/Coat_Check_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "time_delay",
+      "description": "Vestiaire - vérifier un objet et le récupérer un autre jour"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Conference Room",
+    "image": "app/assets/rooms/037-046/Conference_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "centralize_spread",
+      "description": "Salle de conférence - les objets sont placés ici au lieu d'être propagés"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Dining Room",
+    "image": "app/assets/rooms/037-046/Dining_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "daily_meal",
+      "description": "Salle à manger - un repas est servi après le rang 8"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Freezer",
+    "image": "app/assets/rooms/037-046/Freezer_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "freeze_accounts",
+      "description": "Congélateur - gèle vos comptes jusqu'à demain"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Mail Room",
+    "image": "app/assets/rooms/037-046/Mail_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "delayed_package",
+      "description": "Salle de courrier - un colis sera livré le lendemain"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Observatory",
+    "image": "app/assets/rooms/037-046/Observatory_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "cumulative_bonus",
+      "description": "Observatoire - bonus cumulatif à chaque tirage"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Room 46",
+    "image": "app/assets/rooms/037-046/Room_46_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "mystery",
+      "description": "Pièce 46 - pièce mystérieuse sans portes"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Sauna",
+    "image": "app/assets/rooms/037-046/Sauna_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "next_day_bonus",
+      "description": "Sauna - commencer demain avec 20 pas supplémentaires"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Cloister",
+    "image": "app/assets/rooms/GreenRooms/Cloister_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "nature_peace",
+      "description": "Cloître - espace de paix extérieur"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Courtyard",
+    "image": "app/assets/rooms/GreenRooms/Courtyard_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "outdoor_space",
+      "description": "Cour intérieure - espace extérieur central"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Greenhouse",
+    "image": "app/assets/rooms/GreenRooms/Greenhouse_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "rare_cards",
+      "description": "Serre - plus susceptible de tirer des cartes rares"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Morning Room",
+    "image": "app/assets/rooms/GreenRooms/Morning_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "morning_bonus",
+      "description": "Salon du matin - commencer demain avec 2 gemmes"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Patio",
+    "image": "app/assets/rooms/GreenRooms/Patio_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "spread_in_green",
+      "description": "Patio - propage l'or dans chaque pièce verte"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Secret Garden",
+    "image": "app/assets/rooms/GreenRooms/Secret_Garden_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "spread_fruit",
+      "description": "Jardin secret - propage des fruits dans toute la maison"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Terrace",
+    "image": "app/assets/rooms/GreenRooms/Terrace_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "no_gem_cost",
+      "description": "Terrasse - les pièces vertes ne coûtent pas de gemmes"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Veranda",
+    "image": "app/assets/rooms/GreenRooms/Veranda_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "green",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "find_items",
+      "description": "Véranda - plus de chance de trouver des objets dans les pièces vertes"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Corridor",
+    "image": "app/assets/rooms/Hallways/Corridor_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "always_unlocked",
+      "description": "Couloir - toujours déverrouillé"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "East Wing Hall",
+    "image": "app/assets/rooms/Hallways/East_Wing_Hall_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor",
+      "description": "Couloir de l'aile est - facilite la circulation"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Foyer",
+    "image": "app/assets/rooms/Hallways/Foyer_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "always_unlocked",
+      "description": "Foyer - portes de couloir toujours déverrouillées"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Great Hall",
+    "image": "app/assets/rooms/Hallways/Great_Hall_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 1,
+    "color": "orange",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "grand_corridor",
+      "description": "Grand hall - 7 portes verrouillées"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Hallway",
+    "image": "app/assets/rooms/Hallways/Hallway_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor",
+      "description": "Couloir - facilite les déplacements"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Passageway",
+    "image": "app/assets/rooms/Hallways/Passageway_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor",
+      "description": "Passage - relie plusieurs pièces"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Secret Passage",
+    "image": "app/assets/rooms/Hallways/Secret_Passage_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "color_choice",
+      "description": "Passage secret - mène à une pièce de la couleur de votre choix"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "West Wing Hall",
+    "image": "app/assets/rooms/Hallways/West_Wing_Hall_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor",
+      "description": "Couloir de l'aile ouest - facilite la circulation"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Archives",
+    "image": "app/assets/rooms/RedRooms/Archives_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "no_see_plans",
+      "description": "Archives - ne plus voir 2/3 des plans potentiels"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Chapel",
+    "image": "app/assets/rooms/RedRooms/Chapel_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "lose_steps",
+      "description": "Chapelle - perdre 1 pas en entrant dans la chapelle"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Darkroom",
+    "image": "app/assets/rooms/RedRooms/Darkroom_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "no_see_plans",
+      "description": "Chambre noire - ne peut pas voir les plans en tirant"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Furnace",
+    "image": "app/assets/rooms/RedRooms/Furnace_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "draw_bonus",
+      "description": "Fournaise - plus susceptible de tirer des cartes en tirant"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Gymnasium",
+    "image": "app/assets/rooms/RedRooms/Gymnasium_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "lose_steps",
+      "description": "Gymnase - perdre 2 pas en entrant dans le gymnase"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Lavatory",
+    "image": "app/assets/rooms/RedRooms/Lavatory_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "utility",
+      "description": "Toilettes - pièce utilitaire"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Maid's Chamber",
+    "image": "app/assets/rooms/RedRooms/Maid%27s_Chamber_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "less_items",
+      "description": "Chambre de bonne - moins susceptible de trouver des objets"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Weight Room",
+    "image": "app/assets/rooms/RedRooms/Weight_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "red",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "lose_half_steps",
+      "description": "Salle de musculation - perdre la moitié de vos pas"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Bookshop",
+    "image": "app/assets/rooms/Shops/Bookshop_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Librairie - livres à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Commissary",
+    "image": "app/assets/rooms/Shops/Commissary_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Économat - objets à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Kitchen",
+    "image": "app/assets/rooms/Shops/Kitchen_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Cuisine - nourriture à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Laundry Room",
+    "image": "app/assets/rooms/Shops/Laundry_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Buanderie - linge/monnaie à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Locksmith",
+    "image": "app/assets/rooms/Shops/Locksmith_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Serrurier - clés à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Mount Holly Gift Shop",
+    "image": "app/assets/rooms/Shops/Mount_Holly_Gift_Shop_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Boutique de cadeaux - souvenirs à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Showroom",
+    "image": "app/assets/rooms/Shops/Showroom_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "Salle d'exposition - objets de luxe à vendre"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "The Armory",
+    "image": "app/assets/rooms/Shops/The_Armory_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "yellow",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "shop",
+      "description": "L'armurerie - armes et armures à vendre"
+    },
+    "placement_condition": "any"
+  }
+]
