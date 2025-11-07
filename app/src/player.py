@@ -16,17 +16,20 @@ class InventoryKey(Enum) :
     RABBIT_FOOT = 9
 
 
-class player:
+class Player:
     def __init__(self, position : Position):
-        self.inventory : Dict[int, Item] = {InventoryKey.COIN : Coin(count = 0),
-                              InventoryKey.DICE : Dice(count = 0),
-                              InventoryKey.KEY : Key(count = 0),
-                              InventoryKey.GEM : Gem(count = 2),
-                              InventoryKey.STEP : Step(count = 70),
-                              InventoryKey.SHOVEL : Shovel(count = 0),
-                              InventoryKey.HAMMER : Hammer(count = 0),
-                              InventoryKey.LOCK_PICK_KIT : LockPickKit(count = 0),
-                              InventoryKey.RABBIT_FOOT : RabbitFoot(count = 0)}
+        self.inventory : Dict[InventoryKey, Item] = {
+            InventoryKey.COIN : Coin(count = 0),
+            InventoryKey.DICE : Dice(count = 10),
+            InventoryKey.KEY : Key(count = 0),
+            InventoryKey.GEM : Gem(count = 8),
+            InventoryKey.STEP : Step(count = 70),
+            InventoryKey.SHOVEL : Shovel(count = 0),
+            InventoryKey.METAL_DETECTOR: MetalDetector(count = 0),
+            InventoryKey.HAMMER : Hammer(count = 0),
+            InventoryKey.LOCK_PICK_KIT : LockPickKit(count = 2),
+            InventoryKey.RABBIT_FOOT : RabbitFoot(count = 9)
+        }
         self.position = position
         self.current_selected_item : Optional[Item] = None
 
@@ -35,26 +38,34 @@ class player:
             self.position = position 
     
     def take_item(self, item : Item):
-        
-        if isinstance(item, Gem) : 
-            self.inventory.update({InventoryKey.GEM : self.inventory[InventoryKey.GEM].add(item.count)})
-        if isinstance(item, Dice) : 
-            self.inventory.update({InventoryKey.DICE: self.inventory[InventoryKey.DICE].add(item.count)})       
-        if isinstance(item, Key) : 
-            self.inventory.update({InventoryKey.KEY : self.inventory[InventoryKey.KEY].add(item.count)})
-        if isinstance(item, Step) : 
-            self.inventory.update({InventoryKey.STEP : self.inventory[InventoryKey.STEP].add(item.count)})           
-        if isinstance(item, Shovel) : 
-            self.inventory.update({InventoryKey.SHOVEL : self.inventory[InventoryKey.SHOVEL].add(item.count)})
-        if isinstance(item, Hammer) : 
-            self.inventory.update({InventoryKey.HAMMER : self.inventory[InventoryKey.HAMMER].add(item.count)})
-        if isinstance(item, LockPickKit) : 
-            self.inventory.update({InventoryKey.LOCK_PICK_KIT : self.inventory[InventoryKey.LOCK_PICK_KIT].add(item.count)})
-        if isinstance(item, RabbitFoot) : 
-            self.inventory.update({InventoryKey.RABBIT_FOOT : self.inventory[InventoryKey.RABBIT_FOOT].add(item.count)})
-            
-        if isinstance(item, Food) : 
-            self.inventory.update({InventoryKey.STEP : self.inventory[InventoryKey.STEP].add(item.add_step)})
+        """Add an item to the player's inventory."""
+        if isinstance(item, Coin) :
+            self.inventory[InventoryKey.COIN].add(item.count)
+        elif isinstance(item, Gem) :
+            self.inventory[InventoryKey.GEM].add(item.count)
+        elif isinstance(item, Dice) :
+            self.inventory[InventoryKey.DICE].add(item.count)
+        elif isinstance(item, Key) :
+            self.inventory[InventoryKey.KEY].add(item.count)
+        elif isinstance(item, Step) :
+            self.inventory[InventoryKey.STEP].add(item.count)
+        elif isinstance(item, Shovel) :
+            self.inventory[InventoryKey.SHOVEL].add(item.count)
+        elif isinstance(item, MetalDetector) :
+            self.inventory[InventoryKey.METAL_DETECTOR].add(item.count)
+        elif isinstance(item, Hammer) :
+            self.inventory[InventoryKey.HAMMER].add(item.count)
+        elif isinstance(item, LockPickKit) :
+            self.inventory[InventoryKey.LOCK_PICK_KIT].add(item.count)
+        elif isinstance(item, RabbitFoot) :
+            self.inventory[InventoryKey.RABBIT_FOOT].add(item.count)
+        elif isinstance(item, Food) :
+            # Food items restore steps when consumed
+            self.inventory[InventoryKey.STEP].add(item.add_step)
+
+    def has_item(self, item_key: InventoryKey) -> bool:
+        """Check if player has at least one of the specified item."""
+        return self.inventory.get(item_key, None) and self.inventory[item_key].count > 0
 
     def use_item(self) -> bool:
         """Use the currently selected item, if any."""
