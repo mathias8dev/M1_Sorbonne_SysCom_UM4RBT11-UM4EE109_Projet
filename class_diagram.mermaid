@@ -1,0 +1,439 @@
+classDiagram
+    %% ========================================
+    %% ABSTRACT BASE CLASSES
+    %% ========================================
+    
+    class Renderable {
+        <<abstract>>
+        + display_helper
+        + __init__(display_helper) <<create>>
+        + render(renderer: Renderer)* <<abstract>>
+    }
+
+    class Item {
+        <<abstract>>
+        + name: str <<class attribute>>
+        + count: int <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+        + __str__(): str
+    }
+
+    %% ========================================
+    %% CORE GAME CLASSES
+    %% ========================================
+
+    class Game {
+        + map: Map
+        + player: Player
+        + game_state: GameState
+        + room_pool: List[Room]
+        + selected_room_index: int
+        + selected_direction: Optional[str]
+        + pending_room_position: Optional[Position]
+        + __init__(display_helper) <<create>>
+        + render(renderer: Renderer)
+        + get_current_room(): Optional[Room]
+        + check_win_condition(): bool
+        + check_lose_condition(): bool
+        + handle_keyboard_event(event)
+        - _draw_mansion(renderer: Renderer)
+        - _draw_game_area(renderer: Renderer)
+        - _draw_rooms(renderer: Renderer)
+        - _draw_player_cursor(renderer: Renderer)
+        - _draw_inventory(renderer: Renderer): int
+        - _draw_room_selection(renderer: Renderer, inventory_end_y: int)
+        - _draw_room_preview(renderer: Renderer, room: Room, rect: Rectangle, is_selected: bool)
+        - _draw_game_status(renderer: Renderer)
+        - _draw_direction_indicator(renderer: Renderer)
+        - _handle_movement_input(event)
+        - _handle_room_selection_input(event)
+        - _handle_room_interaction_input(event)
+        - _attempt_move()
+        - _can_unlock_door(lock_level: int): bool
+        - _start_room_selection()
+        - _confirm_room_selection()
+        - _initialize_door_locks(room: Room)
+        - _check_room_interactions()
+        - _open_chest_with_key()
+        - _open_chest_with_hammer()
+        - _collect_chest_contents(chest: Chest)
+        - _dig_with_shovel()
+        - _has_path_to_victory(): bool
+    }
+
+    class Map {
+        + width: int
+        + height: int
+        + rooms: List[List[Optional[Room]]]
+        + room_pool: List[Room]
+        + used_room_names: set
+        + room_loader: RoomLoader
+        + display_helper
+        + __init__(width: int, height: int, room_loader: Optional[RoomLoader], display_helper) <<create>>
+        + generate_room_pool(count: int): List[Room]
+        + place_room(room: Room, position: Position): bool
+        + generate_map_progressive()
+        + get_room(position: Position): Optional[Room]
+    }
+
+    class Room {
+        + name: str
+        + position: Position
+        + asset_path: str
+        + rarity_degree: int
+        + has_top_door: bool
+        + has_bottom_door: bool
+        + has_left_door: bool
+        + has_right_door: bool
+        + top_door_lock_level: int
+        + bottom_door_lock_level: int
+        + left_door_lock_level: int
+        + right_door_lock_level: int
+        + visited: bool
+        + is_locked: bool
+        + dug: bool
+        + chest: Optional[Chest]
+        + has_treasure: bool
+        + is_target: bool
+        + shop: bool
+        + items: list
+        + gem_cost: int
+        + color: str
+        + lock_level: int
+        + special_effect: dict
+        + placement_condition: str
+        + __init__(name: str, position: Position, asset_path: str, rarity_degree: int, display_helper) <<create>>
+        + from_dict(room_dict: dict, position: Position, display_helper): Room <<classmethod>>
+        + render(renderer: Renderer, highlight: bool)
+        + take_items(): List[Item]
+        + unlock(key: Key): bool
+        + __repr__(): str
+        + __str__(): str
+    }
+
+    class Player {
+        + position: Position
+        + inventory: dict[InventoryKey, Item]
+        + __init__(position: Position) <<create>>
+        + move_to(position: Position)
+        + take_item(item: Item)
+        + has_item(item_key: InventoryKey): bool
+    }
+
+    class Renderer {
+        + screen: pygame.surface.Surface
+        + __init__(screen: pygame.surface.Surface) <<create>>
+        + display_text(text: str, color: Color, font_size: float, position: Position, police: str)
+        + draw_image(asset_path: str, rect: Rectangle)
+        + draw_rectangle(rect: Rectangle, fill_color: Optional[Color], stroke_color: Optional[Color], stroke_width: float)
+        + flip()
+    }
+
+    %% ========================================
+    %% UTILITY CLASSES
+    %% ========================================
+
+    class Position {
+        + x: int
+        + y: int
+        + __init__(x: int, y: int) <<create>>
+        + to_tuple(): tuple[int, int]
+    }
+
+    class Rectangle {
+        + x: int
+        + y: int
+        + width: int
+        + height: int
+        + __init__(x: int, y: int, width: int, height: int) <<create>>
+    }
+
+    class Color {
+        + r: int
+        + g: int
+        + b: int
+        + a: int
+        + __init__(r: int, g: int, b: int, a: int) <<create>>
+        + to_tuple(): tuple[int, int, int, int]
+    }
+
+    class Size {
+        + width: int
+        + height: int
+        + __init__(width: int, height: int) <<create>>
+    }
+
+    class DisplayHelper {
+        + SCREEN_WIDTH: int
+        + SCREEN_HEIGHT: int
+        + ROOM_SIZE: int
+        + MANOR_X: int
+        + MANOR_WIDTH: int
+        + ACTION_X: int
+        + ACTION_WIDTH: int
+        + FPS: int <<class attribute>>
+        + GRID_MARGIN: int <<class attribute>>
+        + GRID_MARGIN_TOP: int <<class attribute>>
+        + ROOM_GAP: int <<class attribute>>
+        + __init__(desktop_width: int, desktop_height: int) <<create>>
+        + update_dimensions(width: int, height: int)
+        + compute_min_size(): tuple[int, int]
+    }
+
+    class RoomLoader {
+        + base_path: str
+        + json_path: str
+        + room_data: dict
+        + __init__() <<create>>
+        + get_room_info(room_name: str): dict
+        + get_all_rooms(): dict
+        + get_rooms_by_color(color: str): list
+        + get_rooms_by_rarity(rarity: int): list
+        + get_rooms_by_placement(placement_condition: str): list
+        + get_available_room_names(exclude_names: list): list
+        - _load_room_data()
+    }
+
+    class Chest {
+        + is_opened: bool
+        + contents: List[Item]
+        + lock_level: int
+        + __init__(contents: List[Item], lock_level: int) <<create>>
+        + open_with_key(key: Key): bool
+        + open_with_hammer(hammer: Hammer): bool
+        + get_contents(): List[Item]
+    }
+
+    class AppLogger {
+        <<static>>
+        + _enabled: bool <<class attribute>>
+        + _max_tag_length: int <<class attribute>>
+        + _file_logging_enabled: bool <<class attribute>>
+        + _log_file_path: Optional[str] <<class attribute>>
+        + _log_file_handle <<class attribute>>
+        + set_enabled(enabled: bool) <<classmethod>>
+        + set_max_tag_length(length: int) <<classmethod>>
+        + set_file_logging_enabled(enabled: bool) <<classmethod>>
+        + set_log_file(file_path: str) <<classmethod>>
+        + get_log_file_path(): Optional[str] <<classmethod>>
+        + d(message: str, tag: Optional[str]) <<classmethod>>
+        + v(message: str, tag: Optional[str]) <<classmethod>>
+        + i(message: str, tag: Optional[str]) <<classmethod>>
+        + w(message: str, tag: Optional[str]) <<classmethod>>
+        + e(message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
+        + log(level: str, message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
+        + shutdown() <<classmethod>>
+        - _log(level: str, message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
+        - _get_tag(): str <<classmethod>>
+        - _extract_tag_from_frame(frame: traceback.FrameSummary): str <<classmethod>>
+        - _truncate_tag(tag: str): str <<classmethod>>
+        - _format_traceback(tb_lines: list): str <<classmethod>>
+        - _write_to_file(log_output: str) <<classmethod>>
+        - _open_log_file() <<classmethod>>
+        - _close_log_file() <<classmethod>>
+        - _ensure_log_file_open() <<classmethod>>
+    }
+
+    class Drawables {
+        <<static>>
+        + STEPS: str <<class attribute>>
+        + COIN: str <<class attribute>>
+        + GEM: str <<class attribute>>
+        + KEY: str <<class attribute>>
+        + DICE: str <<class attribute>>
+        + SHOVEL: str <<class attribute>>
+        + HAMMER: str <<class attribute>>
+        + LOCK_PICK_KIT: str <<class attribute>>
+        + METAL_DETECTOR: str <<class attribute>>
+        + RABBIT_FOOT: str <<class attribute>>
+    }
+
+    %% ========================================
+    %% ENUMERATIONS
+    %% ========================================
+
+    class GameState {
+        <<enumeration>>
+        ENTER_ROOM
+        CHOOSING_ROOM
+        ROOM_INTERACTION
+        GAME_OVER
+        VICTORY
+    }
+
+    class InventoryKey {
+        <<enumeration>>
+        STEP
+        COIN
+        GEM
+        KEY
+        DICE
+        SHOVEL
+        HAMMER
+        METAL_DETECTOR
+        LOCK_PICK_KIT
+        RABBIT_FOOT
+    }
+
+    %% ========================================
+    %% ITEM HIERARCHY - CONSUMABLES
+    %% ========================================
+
+    class Step {
+        + name: str = "Step" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Coin {
+        + name: str = "Coin" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Gem {
+        + name: str = "Gem" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Key {
+        + name: str = "Key" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Dice {
+        + name: str = "Dice" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    %% ========================================
+    %% ITEM HIERARCHY - PERMANENT TOOLS
+    %% ========================================
+
+    class Shovel {
+        + name: str = "Shovel" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Hammer {
+        + name: str = "Hammer" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class MetalDetector {
+        + name: str = "Metal Detector" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class LockPickKit {
+        + name: str = "Lock Pick Kit" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class RabbitFoot {
+        + name: str = "Rabbit's Foot" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    %% ========================================
+    %% ITEM HIERARCHY - FOOD ITEMS
+    %% ========================================
+
+    class Apple {
+        + name: str = "Apple" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Banana {
+        + name: str = "Banana" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Cake {
+        + name: str = "Cake" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Sandwich {
+        + name: str = "Sandwich" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class Meal {
+        + name: str = "Meal" <<class attribute>>
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    %% ========================================
+    %% INHERITANCE RELATIONSHIPS
+    %% ========================================
+
+    Renderable <|-- Game
+    Renderable <|-- Room
+    
+    Item <|-- Step
+    Item <|-- Coin
+    Item <|-- Gem
+    Item <|-- Key
+    Item <|-- Dice
+    Item <|-- Shovel
+    Item <|-- Hammer
+    Item <|-- MetalDetector
+    Item <|-- LockPickKit
+    Item <|-- RabbitFoot
+    Item <|-- Apple
+    Item <|-- Banana
+    Item <|-- Cake
+    Item <|-- Sandwich
+    Item <|-- Meal
+
+    %% ========================================
+    %% COMPOSITION RELATIONSHIPS (Strong ownership)
+    %% ========================================
+
+    Game *-- Map
+    Game *-- Player
+    Game *-- GameState
+    Map *-- Room
+    Map *-- RoomLoader
+    Room *-- Position
+    Room *-- Chest
+    Player *-- Position
+    Player *-- InventoryKey
+    Chest *-- Item
+    Room *-- Item
+
+    %% ========================================
+    %% DEPENDENCY RELATIONSHIPS (Uses)
+    %% ========================================
+
+    Game ..> Renderer : uses
+    Game ..> DisplayHelper : uses
+    Game ..> Drawables : uses
+    Game ..> AppLogger : uses
+    Room ..> Renderer : uses
+    Room ..> DisplayHelper : uses
+    Room ..> AppLogger : uses
+    Map ..> DisplayHelper : uses
+    Map ..> AppLogger : uses
+    Renderer ..> Color : uses
+    Renderer ..> Position : uses
+    Renderer ..> Rectangle : uses
+    Renderer ..> AppLogger : uses
+    RoomLoader ..> AppLogger : uses
+    Chest ..> Key : uses
+    Chest ..> Hammer : uses

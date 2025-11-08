@@ -9,7 +9,30 @@ env/
 venv/
 ENV/
 PythonImportHelper**
-.idea
-.vscode
 features_implemented.md
 image.png
+
+# Logs
+logs/
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
