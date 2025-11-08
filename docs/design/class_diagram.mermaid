@@ -205,35 +205,6 @@ classDiagram
         + get_contents(): List[Item]
     }
 
-    class AppLogger {
-        <<static>>
-        + _enabled: bool <<class attribute>>
-        + _max_tag_length: int <<class attribute>>
-        + _file_logging_enabled: bool <<class attribute>>
-        + _log_file_path: Optional[str] <<class attribute>>
-        + _log_file_handle <<class attribute>>
-        + set_enabled(enabled: bool) <<classmethod>>
-        + set_max_tag_length(length: int) <<classmethod>>
-        + set_file_logging_enabled(enabled: bool) <<classmethod>>
-        + set_log_file(file_path: str) <<classmethod>>
-        + get_log_file_path(): Optional[str] <<classmethod>>
-        + d(message: str, tag: Optional[str]) <<classmethod>>
-        + v(message: str, tag: Optional[str]) <<classmethod>>
-        + i(message: str, tag: Optional[str]) <<classmethod>>
-        + w(message: str, tag: Optional[str]) <<classmethod>>
-        + e(message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
-        + log(level: str, message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
-        + shutdown() <<classmethod>>
-        - _log(level: str, message: str, tag: Optional[str], error: Optional[Exception]) <<classmethod>>
-        - _get_tag(): str <<classmethod>>
-        - _extract_tag_from_frame(frame: traceback.FrameSummary): str <<classmethod>>
-        - _truncate_tag(tag: str): str <<classmethod>>
-        - _format_traceback(tb_lines: list): str <<classmethod>>
-        - _write_to_file(log_output: str) <<classmethod>>
-        - _open_log_file() <<classmethod>>
-        - _close_log_file() <<classmethod>>
-        - _ensure_log_file_open() <<classmethod>>
-    }
 
     class Drawables {
         <<static>>
@@ -424,16 +395,11 @@ classDiagram
     Game ..> Renderer : uses
     Game ..> DisplayHelper : uses
     Game ..> Drawables : uses
-    Game ..> AppLogger : uses
     Room ..> Renderer : uses
     Room ..> DisplayHelper : uses
-    Room ..> AppLogger : uses
     Map ..> DisplayHelper : uses
-    Map ..> AppLogger : uses
     Renderer ..> Color : uses
     Renderer ..> Position : uses
     Renderer ..> Rectangle : uses
-    Renderer ..> AppLogger : uses
-    RoomLoader ..> AppLogger : uses
     Chest ..> Key : uses
     Chest ..> Hammer : uses
