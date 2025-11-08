@@ -44,13 +44,15 @@ python3 app/src/main.py
 
 ## Visualize the UML diagram of our implementation
 
-There is two 3 ways to do that. Since our uml diagram is written in mermaid, 
+There is 3 ways to do that. Since our uml diagram is written in mermaid, 
 
-- You can just basically copy and paste the code inside the .mermaid file at the root (class_diagram.mermaid) in a mermaid editor. (YOu can basically just use this one: https://mermaid.live/ )
+- You can copy and paste the code inside the .mermaid file (docs/design/class_diagram.mermaid) in a mermaid editor. (You can basically just use this one: https://mermaid.live/ )
 
 - You can install a mermaid previewer extension in your vscode and just preview the mermaid code with it
 
-- You can just open the class_diagram.svg file which actually is the svg version of our diagram and just open it with an svg viewer (maybe directly inside vscode or with an external svg viewer)
+- You can use the class_diagram.svg(docs/design/class_diagram.svg) file which actually is the svg version of our diagram and just open it with an svg viewer (maybe directly inside vscode or with an external svg viewer)
+
+![Class Diagram](docs/design/class_diagram.svg)
 
 ### Nota
 
@@ -58,12 +60,12 @@ We recommend to install these extensions to preview the .svg and the .mermaid fi
 
 - For SVG preview
 
-![alt text](docs/drawables/svg_preview.png)
+![SVG preview](docs/drawables/svg_preview.png)
 
 - For Mermaid preview
 
-![alt text](docs/drawables/mermaid_preview.png)
+![Mermaid preview](docs/drawables/mermaid_preview.png)
 
 ## Troubleshoot
-- Sometime, python 3 can be in your path as python. Therefore, the command python3 will not work. And also, if the installation of python is not well done (specially on windows), python will not be in the path at all. Please look on internet to learn how to fix that.
+- Sometime, python 3 can be in your path as python. Therefore, the command **python3** will not work and you should use **python** instead. Also, if the installation of python is not well done (specially on windows), python could not be in the path at all. Please look on internet to learn how to fix that.
 
