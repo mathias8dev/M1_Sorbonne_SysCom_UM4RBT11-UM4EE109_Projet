@@ -8,6 +8,7 @@ import os
 
 from room_loader import RoomLoader
 from display_helper import DisplayHelper
+from logging import AppLogger
 
 class Map:
     def __init__(
@@ -151,7 +152,7 @@ class Map:
         entrance_dict = self.room_loader.get_room_info("Entrance Hall")
 
         if not entrance_dict:
-            print("Warning: Entrance Hall not found in catalogue")
+            AppLogger.w("Entrance Hall not found in catalogue")
             return
 
         # Create starting room using from_dict
@@ -176,7 +177,7 @@ class Map:
         antechamber_dict = self.room_loader.get_room_info("Antechamber")
 
         if not antechamber_dict:
-            print("Warning: Antechamber not found in catalogue")
+            AppLogger.w("Antechamber not found in catalogue")
             return
 
         # Create ending room using from_dict
@@ -190,9 +191,9 @@ class Map:
         self.rooms[antechamber_y][antechamber_x] = antechamber
         self.used_room_names.add(antechamber.name)
 
-        print(f"Map initialized:")
-        print(f"  - {entrance_hall.name} at position ({entrance_x}, {entrance_y})")
-        print(f"  - {antechamber.name} at position ({antechamber_x}, {antechamber_y})")
+        AppLogger.i(f"Map initialized:")
+        AppLogger.i(f"  - {entrance_hall.name} at position ({entrance_x}, {entrance_y})")
+        AppLogger.i(f"  - {antechamber.name} at position ({antechamber_x}, {antechamber_y})")
 
 
 

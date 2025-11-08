@@ -3,6 +3,7 @@ from color import Color
 from position import Position
 import pygame
 from rectangle import Rectangle
+from logging import AppLogger
 
 
 class Renderer:
@@ -24,17 +25,17 @@ class Renderer:
     def draw_rectangle(
         self, rect: Rectangle, fill_color: Optional[Color] = None, stroke_color: Optional[Color]=None, stroke_width: float = 0
     ):
-        print("Drawing rectangle at", rect, "with fill color", fill_color, "and stroke color", stroke_color, "and stroke width", stroke_width)
+        AppLogger.d(f"Drawing rectangle at {rect} with fill color {fill_color} and stroke color {stroke_color} and stroke width {stroke_width}")
         pygame_rect = pygame.Rect(rect.x, rect.y, rect.width, rect.height)
         if fill_color:
-            print("Filling rectangle with color", fill_color)
+            AppLogger.d(f"Filling rectangle with color {fill_color}")
             pygame.draw.rect(
                 self.screen,
                 fill_color.to_tuple(),
                 pygame_rect,
             )
         if stroke_color and stroke_width > 0:
-            print("Drawing rectangle stroke with color", stroke_color, "and width", stroke_width)
+            AppLogger.d(f"Drawing rectangle stroke with color {stroke_color} and width {stroke_width}")
             pygame.draw.rect(
                 self.screen,
                 stroke_color.to_tuple(),

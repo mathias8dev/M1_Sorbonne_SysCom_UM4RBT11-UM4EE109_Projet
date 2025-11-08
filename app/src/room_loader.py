@@ -1,5 +1,6 @@
 import os
 import json
+from logging import AppLogger
 
 class RoomLoader:
     """Loads and manages room data from the assets/rooms_catalogue.json file"""
@@ -30,11 +31,11 @@ class RoomLoader:
                         if room_name:
                             self.room_data[room_name] = room_dict
 
-                    print(f"Loaded {len(self.room_data)} room definitions from JSON")
+                    AppLogger.i(f"Loaded {len(self.room_data)} room definitions from JSON")
             else:
-                print(f"Warning: Room catalogue not found at {self.json_path}")
+                AppLogger.w(f"Room catalogue not found at {self.json_path}")
         except Exception as e:
-            print(f"Warning: Could not load room data JSON: {e}")
+            AppLogger.w(f"Could not load room data JSON: {e}")
 
     def get_room_info(self, room_name: str) -> dict:
         """Get room information from JSON based on room name.
