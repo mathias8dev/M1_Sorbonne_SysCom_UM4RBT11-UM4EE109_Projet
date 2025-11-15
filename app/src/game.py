@@ -30,12 +30,20 @@ class Game(Renderable):
         if entrance_room:
             entrance_room.visited = True
 
+        # Initialize door locks for all pre-placed rooms
+        for y in range(self.map.height):
+            for x in range(self.map.width):
+                room = self.map.rooms[y][x]
+                if room:
+                    self._initialize_door_locks(room)
+
         # Game state
         self.game_state = GameState.ENTER_ROOM
         self.room_pool: List[Room] = []
         self.selected_room_index: int = 0
         self.selected_direction: Optional[str] = None  # "top", "bottom", "left", "right"
         self.pending_room_position: Optional[Position] = None
+        self.status_message: Optional[str] = None  # Message to display in game area
 
     def get_current_room(self) -> Optional[Room]:
         """Get the room at the player's current position."""
@@ -75,8 +83,12 @@ class Game(Renderable):
         According to the rules: player loses if no door can lead to arrival,
         OR all doors require a key and player has none.
 
-        This checks if from current position, considering available doors and keys,
-        we can reach the Antechamber.
+        IMPORTANT: ALL movements cost 1 step (including returning to visited rooms).
+
+        This checks if from current position, considering:
+        - All movements cost 1 step
+        - Keys needed to unlock doors
+        - Gems available to place new rooms
 
         Returns:
             True if Antechamber is reachable, False otherwise
@@ -93,49 +105,24 @@ class Game(Renderable):
         if current_room.is_target:
             return True
 
-        # Check if current room has any doors at all
-        has_any_door = (current_room.has_top_door or current_room.has_bottom_door or
-                        current_room.has_left_door or current_room.has_right_door)
-
-        if not has_any_door:
-            return False  # No doors to progress
-
-        # Check if all doors from current room are locked and player has no way to open them
-        all_doors_locked = True
         has_lockpick = self.player.has_item(InventoryKey.LOCK_PICK_KIT)
-        has_keys = self.player.inventory[InventoryKey.KEY].count > 0
-
-        doors_to_check = []
-        if current_room.has_top_door:
-            doors_to_check.append(current_room.top_door_lock_level)
-        if current_room.has_bottom_door:
-            doors_to_check.append(current_room.bottom_door_lock_level)
-        if current_room.has_left_door:
-            doors_to_check.append(current_room.left_door_lock_level)
-        if current_room.has_right_door:
-            doors_to_check.append(current_room.right_door_lock_level)
-
-        for lock_level in doors_to_check:
-            if lock_level == 0:
-                all_doors_locked = False
-                break
-            elif lock_level == 1 and (has_keys or has_lockpick):
-                all_doors_locked = False
-                break
-            elif lock_level == 2 and has_keys:
-                all_doors_locked = False
-                break
-
-        if all_doors_locked:
-            return False  # All doors require keys and player can't open any
 
         # BFS to find path to Antechamber through existing rooms
+        # State: (position, keys_left, steps_left)
+        # ALL movements cost 1 step
         visited = set()
-        queue = deque([(current_pos, self.player.inventory[InventoryKey.KEY].count)])
-        visited.add((current_pos.x, current_pos.y, self.player.inventory[InventoryKey.KEY].count))
+        queue = deque([(current_pos,
+                       self.player.inventory[InventoryKey.KEY].count,
+                       self.player.inventory[InventoryKey.STEP].count)])
+        visited.add((current_pos.x, current_pos.y,
+                    self.player.inventory[InventoryKey.KEY].count,
+                    self.player.inventory[InventoryKey.STEP].count))
+
+        # Track if we found any empty spaces where we could potentially place rooms
+        found_placeable_space = False
 
         while queue:
-            pos, keys_left = queue.popleft()
+            pos, keys_left, steps_left = queue.popleft()
 
             # Get room at this position
             room = self.map.get_room(pos)
@@ -144,13 +131,13 @@ class Game(Renderable):
 
             # Check all four directions
             directions = [
-                ("top", -1, 0, room.has_top_door, room.top_door_lock_level),
-                ("bottom", 1, 0, room.has_bottom_door, room.bottom_door_lock_level),
-                ("left", 0, -1, room.has_left_door, room.left_door_lock_level),
-                ("right", 0, 1, room.has_right_door, room.right_door_lock_level),
+                ("top", -1, 0, room.has_top_door),
+                ("bottom", 1, 0, room.has_bottom_door),
+                ("left", 0, -1, room.has_left_door),
+                ("right", 0, 1, room.has_right_door),
             ]
 
-            for direction_name, dy, dx, has_door, lock_level in directions:
+            for direction_name, dy, dx, has_door in directions:
                 if not has_door:
                     continue
 
@@ -161,20 +148,32 @@ class Game(Renderable):
                 if not (0 <= new_x < self.map.width and 0 <= new_y < self.map.height):
                     continue
 
+                # Check the next room to determine effective lock level
+                next_room = self.map.get_room(Position(new_x, new_y))
+
+                # Determine effective lock level (max of source and destination)
+                source_lock_level = room.lock_level
+                if next_room:
+                    # Room exists - use max of both lock levels
+                    effective_lock_level = max(source_lock_level, next_room.lock_level)
+                else:
+                    # Empty space - only source lock level applies
+                    effective_lock_level = source_lock_level
+
                 # Check if we can unlock this door
                 keys_needed = 0
                 can_pass = False
 
-                if lock_level == 0:
+                if effective_lock_level == 0:
                     can_pass = True
-                elif lock_level == 1:
+                elif effective_lock_level == 1:
                     # Can use key or lockpick
                     if has_lockpick:
                         can_pass = True
                     elif keys_left > 0:
                         can_pass = True
                         keys_needed = 1
-                elif lock_level == 2:
+                elif effective_lock_level == 2:
                     # Can only use key
                     if keys_left > 0:
                         can_pass = True
@@ -185,29 +184,57 @@ class Game(Renderable):
 
                 new_keys = keys_left - keys_needed
 
-                # Check if already visited this state
-                state = (new_x, new_y, new_keys)
-                if state in visited:
+                # ALL movements cost 1 step (rule from PDF)
+                new_steps = steps_left - 1
+
+                # Can't proceed if we don't have enough steps
+                if new_steps < 0:
                     continue
 
-                visited.add(state)
-
-                # Check the next room
-                next_room = self.map.get_room(Position(new_x, new_y))
-
                 if next_room:
-                    # Room exists - check if it's the target
+                    # Room exists - can we move there?
+                    # Check if already visited this state
+                    state = (new_x, new_y, new_keys, new_steps)
+                    if state in visited:
+                        continue
+
+                    visited.add(state)
+
+                    # Check if it's the target
                     if next_room.is_target:
                         return True  # Found path to Antechamber!
 
                     # Continue exploring from this room
-                    queue.append((Position(new_x, new_y), new_keys))
+                    queue.append((Position(new_x, new_y), new_keys, new_steps))
                 else:
-                    # Empty space - we could potentially place a room here
-                    # This means we have a door leading somewhere, so we're not stuck yet
-                    return True
+                    # Empty space - check if player can afford to place a room here
+                    player_gems = self.player.inventory[InventoryKey.GEM].count
 
-        return False  # No path found to Antechamber
+                    # Check if there are any available rooms to place
+                    available_rooms = self.map.generate_room_pool(count=3)
+                    affordable_rooms = [r for r in available_rooms if r.gem_cost <= player_gems]
+
+                    if affordable_rooms:
+                        # Player could potentially place a room here
+                        found_placeable_space = True
+                        # Don't return yet - continue exploring to find all possible paths
+
+        # After exploring all paths through existing rooms:
+        # If we found at least one empty space where we can afford to place a room,
+        # then we're not stuck yet - the player could potentially find keys or resources
+        if found_placeable_space:
+            return True
+
+        # If BFS found no direct path, but player still has resources,
+        # they might find keys/items in future rooms
+        # Only declare "no path" if player is truly stuck (no steps OR no placement options)
+        player_steps = self.player.inventory[InventoryKey.STEP].count
+        if player_steps > 0:
+            # Player has steps - they might still find a way
+            # Don't prematurely declare game over
+            return True
+
+        return False  # No path found and no steps to continue exploring
 
     def render(self, renderer: 'Renderer'):
         if not self.display_helper:
@@ -504,8 +531,8 @@ class Game(Renderable):
         """Draw a preview of a room at the specified rectangle."""
         from app_color import room_stroke_visited_color, room_stroke_default_color, door_color
 
-        # Draw room image
-        renderer.draw_image(room.asset_path, rect)
+        # Draw room image with rotation
+        renderer.draw_image(room.asset_path, rect, rotation=room.rotation)
 
         # Draw border (thicker if selected)
         stroke_color = Color(0, 150, 0) if is_selected else black_color
@@ -593,12 +620,16 @@ class Game(Renderable):
         # Direction selection with ZQSD
         if event.key == pygame.K_z:  # Up
             self.selected_direction = "top"
+            self.status_message = None  # Clear previous messages
         elif event.key == pygame.K_s:  # Down
             self.selected_direction = "bottom"
+            self.status_message = None  # Clear previous messages
         elif event.key == pygame.K_q:  # Left
             self.selected_direction = "left"
+            self.status_message = None  # Clear previous messages
         elif event.key == pygame.K_d:  # Right
             self.selected_direction = "right"
+            self.status_message = None  # Clear previous messages
         elif event.key == pygame.K_SPACE and self.selected_direction:
             # Validate movement
             self._attempt_move()
@@ -612,27 +643,28 @@ class Game(Renderable):
         # Check if there's a door in the selected direction
         has_door = False
         new_position = None
-        lock_level = 0
+        source_lock_level = 0
 
         if self.selected_direction == "top" and current_room.has_top_door:
             has_door = True
-            lock_level = current_room.top_door_lock_level
+            source_lock_level = current_room.lock_level
             new_position = Position(self.player.position.x, self.player.position.y - 1)
         elif self.selected_direction == "bottom" and current_room.has_bottom_door:
             has_door = True
-            lock_level = current_room.bottom_door_lock_level
+            source_lock_level = current_room.lock_level
             new_position = Position(self.player.position.x, self.player.position.y + 1)
         elif self.selected_direction == "left" and current_room.has_left_door:
             has_door = True
-            lock_level = current_room.left_door_lock_level
+            source_lock_level = current_room.lock_level
             new_position = Position(self.player.position.x - 1, self.player.position.y)
         elif self.selected_direction == "right" and current_room.has_right_door:
             has_door = True
-            lock_level = current_room.right_door_lock_level
+            source_lock_level = current_room.lock_level
             new_position = Position(self.player.position.x + 1, self.player.position.y)
 
         if not has_door:
-            AppLogger.w(f"No door in direction: {self.selected_direction}")
+            AppLogger.w("No door in that direction")
+            self.status_message = "No door in that direction"
             self.selected_direction = None
             return
 
@@ -646,32 +678,38 @@ class Game(Renderable):
         target_room = self.map.get_room(new_position)
 
         if target_room:
-            # Room already exists
+            # Room already exists - check lock level from BOTH sides
+            # The effective lock level is the maximum of source and destination
+            effective_lock_level = max(source_lock_level, target_room.lock_level)
+
             # If the target room has been visited, we can move back without unlocking
             if target_room.visited:
-                self.player.move_to(new_position)
+                self.player.move_to(new_position)  # Still costs 1 step
                 AppLogger.i(f"Moved back to {target_room.name}")
                 self.selected_direction = None
-                # Still check for interactions (chest, digging spot, etc.)
-                self._check_room_interactions()
+                # Don't re-trigger room interactions for visited rooms
             else:
                 # First time visiting this room - need to unlock the door
-                if self._can_unlock_door(lock_level):
-                    self.player.move_to(new_position)
+                if self._can_unlock_door(effective_lock_level):
+                    self.player.move_to(new_position)  # Costs 1 step
                     target_room.visited = True
                     AppLogger.i(f"Moved to {target_room.name}")
                     self.selected_direction = None
                     # Trigger room interactions after first entry
                     self._check_room_interactions()
                 else:
-                    AppLogger.w(f"Door is locked (level {lock_level}). Need a key!")
+                    message = f"Door is locked (level {effective_lock_level}). Need a key!"
+                    AppLogger.w(message)
+                    self.status_message = message
         else:
-            # Need to choose a new room
-            if self._can_unlock_door(lock_level):
+            # Need to choose a new room - only source lock level applies here
+            if self._can_unlock_door(source_lock_level):
                 self.pending_room_position = new_position
-                self._start_room_selection()
+                self._start_room_selection(entry_direction=self.selected_direction)
             else:
-                AppLogger.w(f"Door is locked (level {lock_level}). Need a key!")
+                message = f"Door is locked (level {source_lock_level}). Need a key!"
+                AppLogger.w(message)
+                self.status_message = message
 
         self.selected_direction = None
 
@@ -699,9 +737,91 @@ class Game(Renderable):
 
         return False
 
-    def _start_room_selection(self):
-        """Start the room selection process."""
-        self.room_pool = self.map.generate_room_pool(count=3)
+    def _get_required_door_for_entry(self, entry_direction: str) -> str:
+        """Get the door that the new room needs based on entry direction.
+
+        Args:
+            entry_direction: Direction player is entering from ("top", "bottom", "left", "right")
+
+        Returns:
+            The door position needed in the new room ("top", "bottom", "left", "right")
+        """
+        # If entering from top (going up), new room needs bottom door
+        # If entering from bottom (going down), new room needs top door
+        # etc.
+        opposite_doors = {
+            "top": "bottom",
+            "bottom": "top",
+            "left": "right",
+            "right": "left"
+        }
+        return opposite_doors.get(entry_direction, "top")
+
+    def _calculate_rotation_for_door(self, room, required_door: str) -> int:
+        """Calculate rotation needed to align a room's door with the required position.
+
+        Args:
+            room: The Room instance
+            required_door: The door position needed ("top", "bottom", "left", "right")
+
+        Returns:
+            Rotation angle in degrees (0, 90, 180, 270)
+        """
+        # First check: does the room already have the required door? If yes, no rotation needed!
+        if required_door == "top" and room.has_top_door:
+            return 0
+        elif required_door == "bottom" and room.has_bottom_door:
+            return 0
+        elif required_door == "left" and room.has_left_door:
+            return 0
+        elif required_door == "right" and room.has_right_door:
+            return 0
+
+        # Room doesn't have the required door, find which door it has
+        room_door = None
+        if room.has_top_door:
+            room_door = "top"
+        elif room.has_bottom_door:
+            room_door = "bottom"
+        elif room.has_left_door:
+            room_door = "left"
+        elif room.has_right_door:
+            room_door = "right"
+
+        if not room_door:
+            return 0  # No doors to rotate
+
+        # Map: (current_door, required_door) -> rotation
+        # Rotation is counter-clockwise in pygame
+        rotation_map = {
+            ("top", "top"): 0,
+            ("top", "right"): 270,  # -90 degrees
+            ("top", "bottom"): 180,
+            ("top", "left"): 90,
+            ("bottom", "top"): 180,
+            ("bottom", "right"): 90,
+            ("bottom", "bottom"): 0,
+            ("bottom", "left"): 270,
+            ("left", "top"): 270,
+            ("left", "right"): 180,
+            ("left", "bottom"): 90,
+            ("left", "left"): 0,
+            ("right", "top"): 90,
+            ("right", "right"): 0,
+            ("right", "bottom"): 270,
+            ("right", "left"): 180,
+        }
+
+        return rotation_map.get((room_door, required_door), 0)
+
+    def _start_room_selection(self, entry_direction: str = "bottom"):
+        """Start the room selection process.
+
+        Args:
+            entry_direction: Direction player is entering from ("top", "bottom", "left", "right")
+        """
+        required_door = self._get_required_door_for_entry(entry_direction)
+        self.room_pool = self.map.generate_room_pool(count=3, required_door=required_door)
         if self.room_pool:
             self.selected_room_index = 0
             self.game_state = GameState.CHOOSING_ROOM
@@ -751,8 +871,6 @@ class Game(Renderable):
             selected_room.position = self.pending_room_position
             self.map.place_room(selected_room, self.pending_room_position)
 
-            # Initialize door locks for this room
-            self._initialize_door_locks(selected_room)
 
             # Move player to new room
             self.player.move_to(self.pending_room_position)
@@ -803,11 +921,11 @@ class Game(Renderable):
             else:
                 lock_level = 2
 
-        # Apply lock level to all doors
-        room.top_door_lock_level = lock_level if room.has_top_door else 0
-        room.bottom_door_lock_level = lock_level if room.has_bottom_door else 0
-        room.left_door_lock_level = lock_level if room.has_left_door else 0
-        room.right_door_lock_level = lock_level if room.has_right_door else 0
+        # Apply lock level to the room (all doors of a room share the same lock level)
+        # Only apply lock level if the room has at least one door
+        has_any_door = (room.has_top_door or room.has_bottom_door or
+                       room.has_left_door or room.has_right_door)
+        room.lock_level = lock_level if has_any_door else 0
 
     def _check_room_interactions(self):
         """Check and handle room interactions (items, chest, digging spot)."""
@@ -961,12 +1079,21 @@ class Game(Renderable):
                 Position(status_x, status_y)
             )
         elif self.game_state == GameState.ENTER_ROOM:
-            renderer.display_text(
-                "Use ZQSD to select direction, SPACE to move",
-                black_color,
-                18,
-                Position(status_x, status_y)
-            )
+            # Display status message if available, otherwise show default instructions
+            if self.status_message:
+                renderer.display_text(
+                    self.status_message,
+                    black_color,
+                    20,
+                    Position(status_x, status_y)
+                )
+            else:
+                renderer.display_text(
+                    "Use ZQSD to select direction, SPACE to move",
+                    black_color,
+                    18,
+                    Position(status_x, status_y)
+                )
         elif self.game_state == GameState.ROOM_INTERACTION:
             if hasattr(self, '_pending_interaction'):
                 if self._pending_interaction == "chest":

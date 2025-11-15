@@ -25,7 +25,7 @@ class Map:
 
     
 
-    def generate_room_pool(self, count: int = 3) -> List[Room]:
+    def generate_room_pool(self, count: int = 3, required_door: str = None) -> List[Room]:
         """Generate a pool of random rooms with weighted selection by rarity.
 
         Rarity distribution:
@@ -35,9 +35,10 @@ class Map:
 
         Args:
             count: Number of rooms to generate in the pool
+            required_door: The door position needed for entry ("top", "bottom", "left", "right")
 
         Returns:
-            List of Room instances with weighted random selection
+            List of Room instances with weighted random selection and appropriate rotation
         """
         pool_rooms = []
 
@@ -81,6 +82,14 @@ class Map:
 
             if selected_room_dict:
                 room = Room.from_dict(selected_room_dict, position=None, display_helper=self.display_helper)
+
+                # Apply rotation if required_door is specified
+                if required_door:
+                    rotation = self._calculate_room_rotation(room, required_door)
+                    room.rotation = rotation
+                    # Apply rotation to door positions
+                    self._apply_rotation_to_doors(room, rotation)
+
                 pool_rooms.append(room)
                 pool_room_names.add(room.name)
 
@@ -99,9 +108,106 @@ class Map:
             free_rooms = [r for r in rarity_0_rooms + rarity_1_rooms + rarity_2_rooms
                          if r.get("gem_cost", 0) == 0]
             if free_rooms:
-                pool_rooms[-1] = Room.from_dict(random.choice(free_rooms), position=None, display_helper=self.display_helper)
+                last_room = Room.from_dict(random.choice(free_rooms), position=None, display_helper=self.display_helper)
+                if required_door:
+                    rotation = self._calculate_room_rotation(last_room, required_door)
+                    last_room.rotation = rotation
+                    self._apply_rotation_to_doors(last_room, rotation)
+                pool_rooms[-1] = last_room
 
         return pool_rooms
+
+    def _calculate_room_rotation(self, room: Room, required_door: str) -> int:
+        """Calculate rotation needed to align a room's door with required position.
+
+        Args:
+            room: The Room instance
+            required_door: The door position needed ("top", "bottom", "left", "right")
+
+        Returns:
+            Rotation angle in degrees (0, 90, 180, 270)
+        """
+        # First check: does the room already have the required door? If yes, no rotation needed!
+        if required_door == "top" and room.has_top_door:
+            return 0
+        elif required_door == "bottom" and room.has_bottom_door:
+            return 0
+        elif required_door == "left" and room.has_left_door:
+            return 0
+        elif required_door == "right" and room.has_right_door:
+            return 0
+
+        # Room doesn't have the required door, find which door it has
+        room_door = None
+        if room.has_top_door:
+            room_door = "top"
+        elif room.has_bottom_door:
+            room_door = "bottom"
+        elif room.has_left_door:
+            room_door = "left"
+        elif room.has_right_door:
+            room_door = "right"
+
+        if not room_door:
+            return 0  # No doors to rotate
+
+        # Map: (current_door, required_door) -> rotation (counter-clockwise)
+        rotation_map = {
+            ("top", "top"): 0,
+            ("top", "right"): 270,
+            ("top", "bottom"): 180,
+            ("top", "left"): 90,
+            ("bottom", "top"): 180,
+            ("bottom", "right"): 90,
+            ("bottom", "bottom"): 0,
+            ("bottom", "left"): 270,
+            ("left", "top"): 270,
+            ("left", "right"): 180,
+            ("left", "bottom"): 90,
+            ("left", "left"): 0,
+            ("right", "top"): 90,
+            ("right", "right"): 0,
+            ("right", "bottom"): 270,
+            ("right", "left"): 180,
+        }
+
+        return rotation_map.get((room_door, required_door), 0)
+
+    def _apply_rotation_to_doors(self, room: Room, rotation: int):
+        """Transform door positions based on rotation angle.
+
+        Args:
+            room: The Room instance to modify
+            rotation: Rotation angle in degrees (0, 90, 180, 270)
+        """
+        if rotation == 0:
+            return  # No rotation needed
+
+        # Store original door states
+        orig_top = room.has_top_door
+        orig_bottom = room.has_bottom_door
+        orig_left = room.has_left_door
+        orig_right = room.has_right_door
+
+        # Apply rotation transformation
+        if rotation == 90:  # Counter-clockwise
+            # top -> left, left -> bottom, bottom -> right, right -> top
+            room.has_top_door = orig_right
+            room.has_left_door = orig_top
+            room.has_bottom_door = orig_left
+            room.has_right_door = orig_bottom
+        elif rotation == 180:
+            # top -> bottom, bottom -> top, left -> right, right -> left
+            room.has_top_door = orig_bottom
+            room.has_bottom_door = orig_top
+            room.has_left_door = orig_right
+            room.has_right_door = orig_left
+        elif rotation == 270:  # Counter-clockwise (or 90 clockwise)
+            # top -> right, right -> bottom, bottom -> left, left -> top
+            room.has_top_door = orig_left
+            room.has_right_door = orig_top
+            room.has_bottom_door = orig_right
+            room.has_left_door = orig_bottom
 
     
 
@@ -187,7 +293,9 @@ class Map:
             display_helper=self.display_helper
         )
 
-        
+        # The Antechamber's door locks will be initialized by Game._initialize_door_locks
+        # Since it's at row 0, its doors will have lock_level = 2 (highest difficulty)
+
         self.rooms[antechamber_y][antechamber_x] = antechamber
         self.used_room_names.add(antechamber.name)
 

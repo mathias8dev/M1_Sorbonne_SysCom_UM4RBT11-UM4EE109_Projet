@@ -41,18 +41,18 @@ class Room(Renderable):
         self.has_bottom_door: bool = False
         self.has_left_door: bool = False
         self.has_right_door: bool = False
-        self.top_door_lock_level: int = 0
-        self.bottom_door_lock_level: int = 0
-        self.left_door_lock_level: int = 0
-        self.right_door_lock_level: int = 0
+        self.lock_level: int = 0
         self.visited: bool = False
         self.is_locked: bool = False
+        self.gem_cost: int = 0
+        self.color: str = ""
         self.dug = False
         self.chest: Optional[Chest] = None
         self.has_treasure: bool = False
         self.is_target: bool = False
         self.shop: bool = False
         self.items: list = []
+        self.rotation: int = 0  # Rotation angle in degrees (0, 90, 180, 270)
 
     @classmethod
     def from_dict(cls, room_dict: dict, position: Position = None, display_helper=None):
@@ -156,13 +156,11 @@ class Room(Renderable):
 
         AppLogger.d(f"Room rect is {rect}")
 
-        renderer.draw_image(self.asset_path, rect)
-      
-
         stroke_color = room_stroke_visited_color if self.visited else room_stroke_default_color
         stroke_width = 4 if highlight else 2
 
-        renderer.draw_image(self.asset_path, rect)
+        # Draw room image with rotation
+        renderer.draw_image(self.asset_path, rect, rotation=self.rotation)
         renderer.draw_rectangle(rect, None, stroke_color, stroke_width)
 
        

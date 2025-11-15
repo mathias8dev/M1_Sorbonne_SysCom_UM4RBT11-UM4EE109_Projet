@@ -20,9 +20,9 @@ class Player:
     def __init__(self, position : Position):
         self.inventory : Dict[InventoryKey, Item] = {
             InventoryKey.COIN : Coin(count = 0),
-            InventoryKey.DICE : Dice(count = 10),
-            InventoryKey.KEY : Key(count = 0),
-            InventoryKey.GEM : Gem(count = 8),
+            InventoryKey.DICE : Dice(count = 100),
+            InventoryKey.KEY : Key(count = 10),
+            InventoryKey.GEM : Gem(count = 100),
             InventoryKey.STEP : Step(count = 70),
             InventoryKey.SHOVEL : Shovel(count = 0),
             InventoryKey.METAL_DETECTOR: MetalDetector(count = 0),
@@ -34,7 +34,14 @@ class Player:
         self.current_selected_item : Optional[Item] = None
 
     def move_to(self, position : Position) :
-        if self.inventory[InventoryKey.STEP].use() :
+        """Move player to a new position.
+
+        Every movement costs 1 step, regardless of whether the room was visited before.
+
+        Args:
+            position: The position to move to
+        """
+        if self.inventory[InventoryKey.STEP].use():
             self.position = position 
     
     def take_item(self, item : Item):
