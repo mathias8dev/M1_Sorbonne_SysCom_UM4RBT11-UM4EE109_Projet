@@ -1,17 +1,15 @@
-from size import Size
-from rectangle import Rectangle
 from typing import List, Optional
 from renderer import Renderer
 from renderable import Renderable
-from app_color import white_color, black_color
-from color import Color
 from map import Map
 from player import Player, InventoryKey
 from position import Position
 from game_state import GameState
 from room import Room
-from drawables import Drawables
 from logging import AppLogger
+from game_renderer import GameRenderer
+from input_handler import InputHandler
+from room_interaction_handler import RoomInteractionHandler
 
 
 class Game(Renderable):
@@ -44,6 +42,10 @@ class Game(Renderable):
         self.selected_direction: Optional[str] = None  # "top", "bottom", "left", "right"
         self.pending_room_position: Optional[Position] = None
         self.status_message: Optional[str] = None  # Message to display in game area
+        # Initialize handlers
+        self.game_renderer = GameRenderer(self)
+        self.input_handler = InputHandler(self)
+        self.room_interaction_handler = RoomInteractionHandler(self)
 
     def get_current_room(self) -> Optional[Room]:
         """Get the room at the player's current position."""
@@ -77,6 +79,10 @@ class Game(Renderable):
         self.selected_direction = None
         self.pending_room_position = None
         self.status_message = None
+        # Initialize handlers
+        self.game_renderer = GameRenderer(self)
+        self.input_handler = InputHandler(self)
+        self.room_interaction_handler = RoomInteractionHandler(self)
 
         AppLogger.i("Game restarted!")
 
@@ -268,411 +274,22 @@ class Game(Renderable):
         return False  # No path found and no steps to continue exploring
 
     def render(self, renderer: 'Renderer'):
-        if not self.display_helper:
-            return
+        """Delegate rendering to GameRenderer."""
+        self.game_renderer.render(renderer)
 
-        # Draw the manor background
-        self._draw_mansion(renderer)
 
-        # Draw all rooms on the map
-        self._draw_rooms(renderer)
 
-        # Draw player highlight
-        self._draw_player_cursor(renderer)
 
-        # Draw the action area
-        self._draw_game_area(renderer)
 
-        # Draw inventory in action area
-        inventory_end_y = self._draw_inventory(renderer)
 
-        # Draw room pool if in room selection mode
-        if self.game_state == GameState.CHOOSING_ROOM and self.room_pool:
-            self._draw_room_selection(renderer, inventory_end_y)
 
-        # Draw game status messages
-        self._draw_game_status(renderer)
 
-        # Draw selected direction indicator
-        if self.selected_direction and self.game_state == GameState.ENTER_ROOM:
-            self._draw_direction_indicator(renderer)
-
-    def _draw_mansion(self, renderer: 'Renderer'):
-        if not self.display_helper:
-            return
-        renderer.draw_rectangle(
-            Rectangle(
-                x=self.display_helper.MANOR_X,
-                y=0,
-                width=self.display_helper.MANOR_WIDTH,
-                height=self.display_helper.SCREEN_HEIGHT
-            ),
-            fill_color=black_color
-        )
-
-    def _draw_game_area(self, renderer: 'Renderer'):
-        if not self.display_helper:
-            return
-        renderer.draw_rectangle(
-            Rectangle(
-                x=self.display_helper.ACTION_X,
-                y=0,
-                width=self.display_helper.ACTION_WIDTH,
-                height=self.display_helper.SCREEN_HEIGHT
-            ),
-            fill_color=white_color
-        )
-
-    def _draw_rooms(self, renderer: 'Renderer'):
-        """Draw all rooms in the map grid."""
-        for y in range(self.map.height):
-            for x in range(self.map.width):
-                room = self.map.rooms[y][x]
-                if room:
-                    # Highlight if this is the player's current position
-                    highlight = (x == self.player.position.x and y == self.player.position.y)
-                    AppLogger.d(f"Rendering room at {room.position} with highlight {highlight}")
-                    room.render(renderer, highlight=highlight)
-
-    def _draw_player_cursor(self, renderer: 'Renderer'):
-        """Draw a cursor or highlight around the player's current room."""
-        # This is handled by the highlight parameter in _draw_rooms
-        pass
-
-    def _draw_inventory(self, renderer: 'Renderer') -> int:
-        """Draw the player's inventory in the action area with two columns.
-
-        Returns:
-            The final y_offset after drawing all inventory items.
-        """
-        if not self.display_helper:
-            return 20
-
-        # Starting position for inventory display
-        start_x = self.display_helper.ACTION_X + 20
-        start_y = 20
-        line_height = 35
-        icon_size = 25
-        right_margin = 20  # Margin from the right edge
-
-        # Display title
-        renderer.display_text(
-            "Inventory:",
-            black_color,
-            24,
-            Position(start_x, start_y)
-        )
-
-        # Calculate column positions
-        # Left column: permanent items (starts at start_x)
-        col1_x = start_x
-
-        # Right column: consumable items (aligned to the right edge of action area)
-        # ACTION_X + ACTION_WIDTH gives us the right edge
-        # We subtract right_margin and space for icon + text (approximately 80px)
-        action_right_edge = self.display_helper.ACTION_X + self.display_helper.ACTION_WIDTH
-        col2_x = action_right_edge - right_margin - 80  # 80px for icon + number display
-
-        # Start drawing items below title
-        items_start_y = start_y + 40
-
-        # LEFT COLUMN: Display permanent items
-        perm_y_offset = items_start_y
-        permanent_items = [
-            (InventoryKey.SHOVEL, "Shovel", Drawables.SHOVEL),
-            (InventoryKey.HAMMER, "Hammer", Drawables.HAMMER),
-            (InventoryKey.LOCK_PICK_KIT, "Lockpick Kit", Drawables.LOCK_PICK_KIT),
-            (InventoryKey.METAL_DETECTOR, "Metal Detector", Drawables.METAL_DETECTOR),
-            (InventoryKey.RABBIT_FOOT, "Rabbit's Foot", Drawables.RABBIT_FOOT),
-        ]
-
-        for item_key, label, icon_path in permanent_items:
-            has_item = self.player.inventory[item_key].count > 0
-            if has_item:
-                # Draw icon
-                icon_rect = Rectangle(col1_x, perm_y_offset, icon_size, icon_size)
-                renderer.draw_image(icon_path, icon_rect)
-
-                # Draw text next to icon
-                renderer.display_text(
-                    label,
-                    black_color,
-                    18,
-                    Position(col1_x + icon_size + 10, perm_y_offset + 5)
-                )
-                perm_y_offset += line_height
-
-        # RIGHT COLUMN: Display consumable items (aligned to the right)
-        cons_y_offset = items_start_y
-        inventory_items = [
-            (InventoryKey.STEP, "Steps", Drawables.STEPS),
-            (InventoryKey.COIN, "Coins", Drawables.COIN),
-            (InventoryKey.GEM, "Gems", Drawables.GEM),
-            (InventoryKey.KEY, "Keys", Drawables.KEY),
-            (InventoryKey.DICE, "Dice", Drawables.DICE),
-        ]
-
-        for item_key, label, icon_path in inventory_items:
-            count = self.player.inventory[item_key].count
-
-            # Draw count first (before icon) - pad with spaces for alignment (2 digits width)
-            count_text = f"{count:>2}"  # Right-align to 2 characters width
-            renderer.display_text(
-                count_text,
-                black_color,
-                24,  # Increased font size from 20 to 24
-                Position(col2_x, cons_y_offset + 3)
-            )
-
-            # Draw icon after the count (fixed position since all counts are same width)
-            # 2 digits * ~15px per digit for font size 24 = ~30px
-            icon_x = col2_x + 30 + 10
-            icon_rect = Rectangle(icon_x, cons_y_offset, icon_size, icon_size)
-            renderer.draw_image(icon_path, icon_rect)
-
-            cons_y_offset += line_height
-
-        # Calculate final y position (max of both columns)
-        final_y = max(perm_y_offset, cons_y_offset)
-
-        # Display current room name below both columns
-        final_y += 20
-        current_room = self.get_current_room()
-        if current_room:
-            renderer.display_text(
-                f"Current Room: {current_room.name}",
-                black_color,
-                22,
-                Position(start_x, final_y)
-            )
-            final_y += 35  # Account for current room text height
-
-        # Return final y position (end of inventory area)
-        return final_y
-
-    def _draw_room_selection(self, renderer: 'Renderer', inventory_end_y: int):
-        """Draw the room selection UI showing 3 room choices with visual previews (horizontal layout).
-
-        Args:
-            renderer: The renderer to draw with.
-            inventory_end_y: The y-coordinate where the inventory display ends.
-        """
-        if not self.display_helper or not self.room_pool:
-            return
-
-        # Draw selection panel in action area
-        panel_x = self.display_helper.ACTION_X + 20
-        # Position panel below inventory with proper top margin for visual separation
-        panel_y = inventory_end_y + 140
-
-        # Draw title
-        renderer.display_text(
-            "Choose a room to draft",
-            black_color,
-            28,
-            Position(panel_x + 200, panel_y - 60)
-        )
-
-        # Draw "Redraw" button text on the right
-        renderer.display_text(
-            "Redraw",
-            black_color,
-            24,
-            Position(panel_x + 650, panel_y - 60)
-        )
-
-        # Draw each room option with preview (horizontal layout)
-        room_width = 220  # Width of each room card
-        spacing = 30
-        preview_size = 180  # Size of room preview
-
-        for i, room in enumerate(self.room_pool):
-            room_x = panel_x + i * (room_width + spacing)
-            room_y = panel_y
-
-            # Highlight selected room with background and border
-            if i == self.selected_room_index:
-                from app_color import trophy_color
-                # Draw highlighted background
-                renderer.draw_rectangle(
-                    Rectangle(room_x - 5, room_y - 5, room_width + 10, preview_size + 120),
-                    Color(200, 230, 255),  # Light blue background
-                    trophy_color,
-                    4
-                )
-            else:
-                # Draw normal border
-                renderer.draw_rectangle(
-                    Rectangle(room_x - 5, room_y - 5, room_width + 10, preview_size + 120),
-                    Color(250, 250, 250),  # Very light gray background
-                    black_color,
-                    2
-                )
-
-            # Render the room preview on top
-            self._draw_room_preview(renderer, room,
-                                   Rectangle(room_x + 10, room_y + 5,
-                                           preview_size, preview_size),
-                                   i == self.selected_room_index)
-
-            # Draw room info below preview
-            info_y = room_y + preview_size + 20
-            text_color = black_color
-
-            # Room name centered
-            renderer.display_text(
-                room.name,
-                text_color,
-                20 if i == self.selected_room_index else 18,
-                Position(room_x + 20, info_y)
-            )
-
-            # Display gem cost with icon (only if cost > 0)
-            if room.gem_cost > 0:
-                gem_icon_size = 20
-                gem_icon_rect = Rectangle(room_x + 20, info_y + 30, gem_icon_size, gem_icon_size)
-                renderer.draw_image(Drawables.GEM, gem_icon_rect)
-
-                cost_text = f"{room.gem_cost} gems"
-                renderer.display_text(
-                    cost_text,
-                    black_color,
-                    16,
-                    Position(room_x + 20 + gem_icon_size + 5, info_y + 32)
-                )
-
-        # Draw instructions at bottom
-        instruction_y = panel_y + preview_size + 150
-        renderer.display_text(
-            "You use a key to open the door.",
-            black_color,
-            16,
-            Position(panel_x + 50, instruction_y)
-        )
-
-        # Draw "with dice" note next to Redraw
-        renderer.display_text(
-            "with dice",
-            black_color,
-            14,
-            Position(panel_x + 650, panel_y - 30)
-        )
-
-    def _draw_room_preview(self, renderer: 'Renderer', room: Room, rect: Rectangle, is_selected: bool):
-        """Draw a preview of a room at the specified rectangle."""
-        from app_color import room_stroke_visited_color, room_stroke_default_color, door_color
-
-        # Draw room image with rotation
-        renderer.draw_image(room.asset_path, rect, rotation=room.rotation)
-
-        # Draw border (thicker if selected)
-        stroke_color = Color(0, 150, 0) if is_selected else black_color
-        stroke_width = 3 if is_selected else 2
-        renderer.draw_rectangle(rect, None, stroke_color, stroke_width)
-
-        # Draw doors as small indicators
-        door_size_ratio = 0.2
-        door_offset_ratio = 0.05
-
-        if room.has_top_door:
-            door_rect = Rectangle(
-                rect.x + int(rect.width * 0.4),
-                rect.y - int(rect.height * door_offset_ratio),
-                int(rect.width * door_size_ratio),
-                int(rect.height * 0.1),
-            )
-            renderer.draw_rectangle(door_rect, door_color, stroke_color, 1)
-
-        if room.has_bottom_door:
-            door_rect = Rectangle(
-                rect.x + int(rect.width * 0.4),
-                rect.y + int(rect.height * (1 - door_offset_ratio)),
-                int(rect.width * door_size_ratio),
-                int(rect.height * 0.1),
-            )
-            renderer.draw_rectangle(door_rect, door_color, stroke_color, 1)
-
-        if room.has_left_door:
-            door_rect = Rectangle(
-                rect.x - int(rect.width * door_offset_ratio),
-                rect.y + int(rect.height * 0.4),
-                int(rect.width * 0.1),
-                int(rect.height * door_size_ratio),
-            )
-            renderer.draw_rectangle(door_rect, door_color, stroke_color, 1)
-
-        if room.has_right_door:
-            door_rect = Rectangle(
-                rect.x + int(rect.width * (1 - door_offset_ratio)),
-                rect.y + int(rect.height * 0.4),
-                int(rect.width * 0.1),
-                int(rect.height * door_size_ratio),
-            )
-            renderer.draw_rectangle(door_rect, door_color, stroke_color, 1)
 
     def handle_keyboard_event(self, event):
-        """Handle keyboard input based on current game state."""
-        import pygame
+        """Delegate keyboard input handling to InputHandler."""
+        self.input_handler.handle_keyboard_event(event)
 
-        # Handle game over/victory popup input
-        if self.game_state == GameState.GAME_OVER or self.game_state == GameState.VICTORY:
-            if event.key == pygame.K_r:  # R for restart
-                self._restart_game()
-                return
-            elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:  # Q or ESC for quit
-                pygame.quit()
-                import sys
-                sys.exit()
-            return
 
-        # Check win/lose conditions
-        if self.check_win_condition():
-            self.game_state = GameState.VICTORY
-            AppLogger.i("Victory! You reached the Antechamber!")
-            return
-
-        if self.check_lose_condition():
-            self.game_state = GameState.GAME_OVER
-            # Determine why player lost
-            if self.player.inventory[InventoryKey.STEP].count <= 0:
-                AppLogger.i("Game Over! You ran out of steps.")
-            else:
-                AppLogger.i("Game Over! No path to victory - you're stuck!")
-            return
-
-        if self.game_state == GameState.ENTER_ROOM:
-            self._handle_movement_input(event)
-
-        elif self.game_state == GameState.CHOOSING_ROOM:
-            self._handle_room_selection_input(event)
-
-        elif self.game_state == GameState.ROOM_INTERACTION:
-            self._handle_room_interaction_input(event)
-
-    def _handle_movement_input(self, event):
-        """Handle ZQSD movement in the manor."""
-        import pygame
-
-        current_room = self.get_current_room()
-        if not current_room:
-            return
-
-        # Direction selection with ZQSD
-        if event.key == pygame.K_z:  # Up
-            self.selected_direction = "top"
-            self.status_message = None  # Clear previous messages
-        elif event.key == pygame.K_s:  # Down
-            self.selected_direction = "bottom"
-            self.status_message = None  # Clear previous messages
-        elif event.key == pygame.K_q:  # Left
-            self.selected_direction = "left"
-            self.status_message = None  # Clear previous messages
-        elif event.key == pygame.K_d:  # Right
-            self.selected_direction = "right"
-            self.status_message = None  # Clear previous messages
-        elif event.key == pygame.K_SPACE and self.selected_direction:
-            # Validate movement
-            self._attempt_move()
 
     def _attempt_move(self):
         """Attempt to move in the selected direction."""
@@ -736,7 +353,7 @@ class Game(Renderable):
                     AppLogger.i(f"Moved to {target_room.name}")
                     self.selected_direction = None
                     # Trigger room interactions after first entry
-                    self._check_room_interactions()
+                    self.room_interaction_handler.check_room_interactions()
                 else:
                     message = f"Door is locked (level {effective_lock_level}). Need a key!"
                     AppLogger.w(message)
@@ -869,26 +486,6 @@ class Game(Renderable):
         else:
             AppLogger.w("No more rooms available!")
 
-    def _handle_room_selection_input(self, event):
-        """Handle room selection input (horizontal navigation with arrow keys)."""
-        import pygame
-
-        # Horizontal navigation with arrow keys (Left/Right)
-        if event.key == pygame.K_LEFT:  # Left arrow
-            self.selected_room_index = (self.selected_room_index - 1) % len(self.room_pool)
-        elif event.key == pygame.K_RIGHT:  # Right arrow
-            self.selected_room_index = (self.selected_room_index + 1) % len(self.room_pool)
-        elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
-            self._confirm_room_selection()
-        elif event.key == pygame.K_r:
-            # Reroll with dice (R key)
-            if self.player.has_item(InventoryKey.DICE):
-                self.player.inventory[InventoryKey.DICE].use()
-                self.room_pool = self.map.generate_room_pool(count=3)
-                self.selected_room_index = 0
-                AppLogger.i("Rerolled room selection!")
-            else:
-                AppLogger.w("No dice available to reroll")
 
     def _confirm_room_selection(self):
         """Confirm and place the selected room."""
@@ -925,7 +522,7 @@ class Game(Renderable):
             self.game_state = GameState.ENTER_ROOM
 
             # Check for room interactions after placing
-            self._check_room_interactions()
+            self.room_interaction_handler.check_room_interactions()
             return
 
         # Reset state
@@ -967,272 +564,10 @@ class Game(Renderable):
                        room.has_left_door or room.has_right_door)
         room.lock_level = lock_level if has_any_door else 0
 
-    def _check_room_interactions(self):
-        """Check and handle room interactions (items, chest, digging spot)."""
-        current_room = self.get_current_room()
-        if not current_room:
-            return
 
-        # Automatically collect items from the room
-        if current_room.items:
-            items_collected = current_room.take_items()
-            for item in items_collected:
-                self.player.take_item(item)
-                AppLogger.i(f"Collected {item.__class__.__name__}!")
 
-        # Check for chest
-        if current_room.chest and not current_room.chest.is_opened:
-            self.game_state = GameState.ROOM_INTERACTION
-            self._pending_interaction = "chest"
-            AppLogger.i("There's a chest here! Press 'K' to open with key, 'H' to smash with hammer, or 'ESC' to skip")
-            return
 
-        # Check for digging spot (has_treasure flag)
-        if current_room.has_treasure and not current_room.dug:
-            if self.player.has_item(InventoryKey.SHOVEL):
-                self.game_state = GameState.ROOM_INTERACTION
-                self._pending_interaction = "dig"
-                AppLogger.i("There's a digging spot here! Press 'D' to dig with shovel or 'ESC' to skip")
-                return
 
-    def _handle_room_interaction_input(self, event):
-        """Handle room interaction input (chest, digging, etc.)."""
-        import pygame
 
-        if not hasattr(self, '_pending_interaction'):
-            self.game_state = GameState.ENTER_ROOM
-            return
 
-        if self._pending_interaction == "chest":
-            if event.key == pygame.K_k:
-                # Open chest with key
-                self._open_chest_with_key()
-            elif event.key == pygame.K_h:
-                # Open chest with hammer
-                self._open_chest_with_hammer()
-            elif event.key == pygame.K_ESCAPE:
-                # Skip chest interaction
-                AppLogger.i("Skipped chest interaction")
-                self._pending_interaction = None
-                self.game_state = GameState.ENTER_ROOM
 
-        elif self._pending_interaction == "dig":
-            if event.key == pygame.K_d:
-                # Dig with shovel
-                self._dig_with_shovel()
-            elif event.key == pygame.K_ESCAPE:
-                # Skip digging
-                AppLogger.i("Skipped digging")
-                self._pending_interaction = None
-                self.game_state = GameState.ENTER_ROOM
-
-    def _open_chest_with_key(self):
-        """Open chest using a key."""
-        current_room = self.get_current_room()
-        if not current_room or not current_room.chest:
-            return
-
-        if self.player.has_item(InventoryKey.KEY):
-            key = self.player.inventory[InventoryKey.KEY]
-            if current_room.chest.open_with_key(key):
-                AppLogger.i("Opened chest with key!")
-                self._collect_chest_contents(current_room.chest)
-                self._pending_interaction = None
-                self.game_state = GameState.ENTER_ROOM
-            else:
-                AppLogger.w("Failed to open chest")
-        else:
-            AppLogger.w("You don't have a key!")
-
-    def _open_chest_with_hammer(self):
-        """Open chest by smashing it with a hammer."""
-        current_room = self.get_current_room()
-        if not current_room or not current_room.chest:
-            return
-
-        if self.player.has_item(InventoryKey.HAMMER):
-            hammer = self.player.inventory[InventoryKey.HAMMER]
-            if current_room.chest.open_with_hammer(hammer):
-                AppLogger.i("Smashed chest open with hammer!")
-                self._collect_chest_contents(current_room.chest)
-                self._pending_interaction = None
-                self.game_state = GameState.ENTER_ROOM
-            else:
-                AppLogger.w("Failed to open chest")
-        else:
-            AppLogger.w("You don't have a hammer!")
-
-    def _collect_chest_contents(self, chest):
-        """Collect all items from an opened chest."""
-        contents = chest.get_contents()
-        for item in contents:
-            self.player.take_item(item)
-            AppLogger.i(f"Found {item.__class__.__name__} in chest!")
-
-    def _dig_with_shovel(self):
-        """Dig at a digging spot using shovel."""
-        current_room = self.get_current_room()
-        if not current_room or current_room.dug:
-            return
-
-        if self.player.has_item(InventoryKey.SHOVEL):
-            # Mark room as dug
-            current_room.dug = True
-            AppLogger.i("Dug with shovel!")
-
-            # TODO: Add treasure items based on room configuration
-            # For now, add some random items
-            import random
-            if random.random() < 0.7:  # 70% chance to find something
-                from items import Coin, Gem
-                found_item = Coin(count=random.randint(5, 15)) if random.random() < 0.6 else Gem(count=random.randint(1, 3))
-                self.player.take_item(found_item)
-                AppLogger.i(f"Found {found_item.__class__.__name__} buried here!")
-            else:
-                AppLogger.i("Nothing found...")
-
-            self._pending_interaction = None
-            self.game_state = GameState.ENTER_ROOM
-        else:
-            AppLogger.w("You don't have a shovel!")
-
-    def _draw_popup(self, renderer: 'Renderer', title: str, message: str):
-        """Draw a popup dialog with title, message, and restart/quit options.
-
-        Args:
-            renderer: The renderer to draw with
-            title: The popup title (e.g., "VICTORY!" or "GAME OVER")
-            message: The message to display
-        """
-        if not self.display_helper:
-            return
-
-        # Draw semi-transparent overlay over entire screen
-        overlay_color = Color(0, 0, 0, 180)  # Black with ~70% opacity
-        renderer.draw_overlay(overlay_color)
-
-        # Popup dimensions (centered on screen)
-        popup_width = 600
-        popup_height = 300
-        popup_x = (self.display_helper.SCREEN_WIDTH - popup_width) // 2
-        popup_y = (self.display_helper.SCREEN_HEIGHT - popup_height) // 2
-
-        # Draw realistic mobile-style shadow with rounded corners
-        popup_rect = Rectangle(popup_x, popup_y, popup_width, popup_height)
-        corner_radius = 15  # Rounded corners radius
-        shadow_color = Color(0, 0, 0, 20)  # Semi-transparent black
-        renderer.draw_shadow(
-            popup_rect,
-            blur_radius=10,           # Larger blur for softer shadow
-            shadow_color=shadow_color,
-            border_radius=corner_radius,
-            offset_x=0,               # No horizontal offset
-            offset_y=0                # Downward offset (light from top)
-        )
-
-        # Draw popup background with rounded corners
-        popup_bg_color = Color(245, 245, 245)  # Very light gray
-        popup_border_color = Color(60, 60, 60)  # Dark gray
-        renderer.draw_rectangle(popup_rect, popup_bg_color, popup_border_color, 3, border_radius=corner_radius)
-
-        # Draw title
-        title_color = Color(200, 50, 50) if "GAME OVER" in title else Color(50, 150, 50)
-        title_x = popup_x + (popup_width // 2) - (len(title) * 10)  # Rough centering
-        title_y = popup_y + 40
-        renderer.display_text(title, title_color, 48, Position(title_x, title_y))
-
-        # Draw message
-        message_x = popup_x + (popup_width // 2) - (len(message) * 6)  # Rough centering
-        message_y = popup_y + 120
-        renderer.display_text(message, black_color, 24, Position(message_x, message_y))
-
-        # Draw instructions
-        instruction1 = "Press R to Restart"
-        instruction2 = "Press Q or ESC to Quit"
-
-        inst1_x = popup_x + (popup_width // 2) - (len(instruction1) * 6)
-        inst1_y = popup_y + 190
-        renderer.display_text(instruction1, black_color, 22, Position(inst1_x, inst1_y))
-
-        inst2_x = popup_x + (popup_width // 2) - (len(instruction2) * 6)
-        inst2_y = popup_y + 230
-        renderer.display_text(instruction2, black_color, 22, Position(inst2_x, inst2_y))
-
-    def _draw_game_status(self, renderer: 'Renderer'):
-        """Draw game status messages at the bottom of the action area."""
-        if not self.display_helper:
-            return
-
-        status_x = self.display_helper.ACTION_X + 20
-        status_y = self.display_helper.SCREEN_HEIGHT - 100
-
-        if self.game_state == GameState.VICTORY:
-            self._draw_popup(renderer, "VICTORY!", "You reached the Antechamber!")
-        elif self.game_state == GameState.GAME_OVER:
-            reason = "You ran out of steps." if self.player.inventory[InventoryKey.STEP].count <= 0 else "No path to victory!"
-            self._draw_popup(renderer, "GAME OVER", reason)
-        elif self.game_state == GameState.ENTER_ROOM:
-            # Display status message if available, otherwise show default instructions
-            if self.status_message:
-                renderer.display_text(
-                    self.status_message,
-                    black_color,
-                    20,
-                    Position(status_x, status_y)
-                )
-            else:
-                renderer.display_text(
-                    "Use ZQSD to select direction, SPACE to move",
-                    black_color,
-                    18,
-                    Position(status_x, status_y)
-                )
-        elif self.game_state == GameState.ROOM_INTERACTION:
-            if hasattr(self, '_pending_interaction'):
-                if self._pending_interaction == "chest":
-                    renderer.display_text(
-                        "Chest: Press K (key) or H (hammer) to open, ESC to skip",
-                        black_color,
-                        18,
-                        Position(status_x, status_y)
-                    )
-                elif self._pending_interaction == "dig":
-                    renderer.display_text(
-                        "Digging Spot: Press D to dig with shovel, ESC to skip",
-                        black_color,
-                        18,
-                        Position(status_x, status_y)
-                    )
-
-    def _draw_direction_indicator(self, renderer: 'Renderer'):
-        """Draw an arrow indicating selected direction on the current room."""
-        if not self.display_helper:
-            return
-
-        current_room = self.get_current_room()
-        if not current_room or not current_room.position:
-            return
-
-        from display_helper import DisplayHelper
-
-        # Calculate room center position
-        room_x = self.display_helper.MANOR_X + DisplayHelper.GRID_MARGIN + \
-                 current_room.position.x * (self.display_helper.ROOM_SIZE + DisplayHelper.ROOM_GAP)
-        room_y = DisplayHelper.GRID_MARGIN_TOP + \
-                 current_room.position.y * (self.display_helper.ROOM_SIZE + DisplayHelper.ROOM_GAP)
-
-        room_center_x = room_x + self.display_helper.ROOM_SIZE // 2
-        room_center_y = room_y + self.display_helper.ROOM_SIZE // 2
-
-        # Draw arrow based on selected direction
-        arrow_size = 30
-        from app_color import trophy_color
-
-        if self.selected_direction == "top":
-            renderer.display_text("↑", trophy_color, arrow_size, Position(room_center_x - 10, room_y - 40))
-        elif self.selected_direction == "bottom":
-            renderer.display_text("↓", trophy_color, arrow_size, Position(room_center_x - 10, room_y + self.display_helper.ROOM_SIZE + 10))
-        elif self.selected_direction == "left":
-            renderer.display_text("←", trophy_color, arrow_size, Position(room_x - 40, room_center_y - 15))
-        elif self.selected_direction == "right":
-            renderer.display_text("→", trophy_color, arrow_size, Position(room_x + self.display_helper.ROOM_SIZE + 10, room_center_y - 15))
