@@ -12,11 +12,36 @@ classDiagram
 
     class Item {
         <<abstract>>
-        + name: str <<class attribute>>
-        + count: int <<class attribute>>
+        + count: int
         + __init__(count: int) <<create>>
+        + use(): bool* <<abstract>>
+        + add(count: int)
+        + __str__(): str
+        + __repr__(): str
+    }
+
+    class Food {
+        <<abstract>>
+        + count: int
+        + add_step: int
+        + __init__(count: int, add_step: int) <<create>>
         + use(): bool
         + __str__(): str
+        + __repr__(): str
+    }
+
+    class Collectable {
+        <<abstract>>
+        + count: int
+        + __init__(count: int) <<create>>
+        + use(): bool
+    }
+
+    class PermanentItem {
+        <<abstract>>
+        + count: int
+        + __init__(count: int) <<create>>
+        + use(): bool
     }
 
     %% ========================================
@@ -27,39 +52,27 @@ classDiagram
         + map: Map
         + player: Player
         + game_state: GameState
+        + game_renderer: GameRenderer
+        + input_handler: InputHandler
+        + room_interaction_handler: RoomInteractionHandler
         + room_pool: List[Room]
         + selected_room_index: int
         + selected_direction: Optional[str]
         + pending_room_position: Optional[Position]
+        + display_helper: DisplayHelper
         + __init__(display_helper) <<create>>
         + render(renderer: Renderer)
         + get_current_room(): Optional[Room]
         + check_win_condition(): bool
         + check_lose_condition(): bool
         + handle_keyboard_event(event)
-        - _draw_mansion(renderer: Renderer)
-        - _draw_game_area(renderer: Renderer)
-        - _draw_rooms(renderer: Renderer)
-        - _draw_player_cursor(renderer: Renderer)
-        - _draw_inventory(renderer: Renderer): int
-        - _draw_room_selection(renderer: Renderer, inventory_end_y: int)
-        - _draw_room_preview(renderer: Renderer, room: Room, rect: Rectangle, is_selected: bool)
-        - _draw_game_status(renderer: Renderer)
-        - _draw_direction_indicator(renderer: Renderer)
-        - _handle_movement_input(event)
-        - _handle_room_selection_input(event)
-        - _handle_room_interaction_input(event)
         - _attempt_move()
         - _can_unlock_door(lock_level: int): bool
         - _start_room_selection()
         - _confirm_room_selection()
         - _initialize_door_locks(room: Room)
-        - _check_room_interactions()
-        - _open_chest_with_key()
-        - _open_chest_with_hammer()
-        - _collect_chest_contents(chest: Chest)
-        - _dig_with_shovel()
         - _has_path_to_victory(): bool
+        - _restart_game()
     }
 
     class Map {
@@ -86,10 +99,7 @@ classDiagram
         + has_bottom_door: bool
         + has_left_door: bool
         + has_right_door: bool
-        + top_door_lock_level: int
-        + bottom_door_lock_level: int
-        + left_door_lock_level: int
-        + right_door_lock_level: int
+        + lock_level: int
         + visited: bool
         + is_locked: bool
         + dug: bool
@@ -115,10 +125,16 @@ classDiagram
     class Player {
         + position: Position
         + inventory: dict[InventoryKey, Item]
+        + current_selected_item: Optional[Item]
         + __init__(position: Position) <<create>>
         + move_to(position: Position)
         + take_item(item: Item)
         + has_item(item_key: InventoryKey): bool
+        + use_item(): bool
+        + select_item(item_key: InventoryKey)
+        + get_stats(): Dict[InventoryKey, Item]
+        + __str__(): str
+        + __repr__(): str
     }
 
     class Renderer {
@@ -139,29 +155,39 @@ classDiagram
         + y: int
         + __init__(x: int, y: int) <<create>>
         + to_tuple(): tuple[int, int]
+        + __str__(): str
+        + __repr__(): str
     }
 
     class Rectangle {
-        + x: int
-        + y: int
-        + width: int
-        + height: int
-        + __init__(x: int, y: int, width: int, height: int) <<create>>
+        + x: float
+        + y: float
+        + width: float
+        + height: float
+        + __init__(x: float, y: float, width: float, height: float) <<create>>
+        + __str__(): str
+        + __repr__(): str
     }
 
     class Color {
-        + r: int
-        + g: int
-        + b: int
-        + a: int
-        + __init__(r: int, g: int, b: int, a: int) <<create>>
+        + red: int
+        + green: int
+        + blue: int
+        + alpha: int
+        + __init__(red: int, green: int, blue: int, alpha: int) <<create>>
         + to_tuple(): tuple[int, int, int, int]
+        + to_rgb_tuple(): tuple[int, int, int]
+        + __str__(): str
+        + __repr__(): str
     }
 
     class Size {
-        + width: int
-        + height: int
-        + __init__(width: int, height: int) <<create>>
+        + width: float
+        + height: float
+        + __init__(width: float, height: float) <<create>>
+        + to_tuple(): tuple[float, float]
+        + __str__(): str
+        + __repr__(): str
     }
 
     class DisplayHelper {
@@ -221,6 +247,44 @@ classDiagram
     }
 
     %% ========================================
+    %% HANDLER CLASSES (Separation of Concerns)
+    %% ========================================
+
+    class GameRenderer {
+        + game: Game
+        + __init__(game: Game) <<create>>
+        + render(renderer: Renderer)
+        - _draw_mansion(renderer: Renderer)
+        - _draw_rooms(renderer: Renderer)
+        - _draw_game_area(renderer: Renderer)
+        - _draw_inventory(renderer: Renderer): int
+        - _draw_room_selection(renderer: Renderer, inventory_end_y: int)
+        - _draw_room_preview(renderer: Renderer, room: Room, rect: Rectangle, is_selected: bool)
+        - _draw_game_status(renderer: Renderer)
+        - _draw_direction_indicator(renderer: Renderer)
+        - _draw_player_cursor(renderer: Renderer)
+    }
+
+    class InputHandler {
+        + game: Game
+        + __init__(game: Game) <<create>>
+        + handle_keyboard_event(event)
+        - _handle_movement_input(event)
+        - _handle_room_selection_input(event)
+        - _handle_room_interaction_input(event)
+    }
+
+    class RoomInteractionHandler {
+        + game: Game
+        + __init__(game: Game) <<create>>
+        + check_room_interactions()
+        + open_chest_with_key()
+        + open_chest_with_hammer()
+        + dig_with_shovel()
+        - _collect_chest_contents(chest: Chest)
+    }
+
+    %% ========================================
     %% ENUMERATIONS
     %% ========================================
 
@@ -235,50 +299,35 @@ classDiagram
 
     class InventoryKey {
         <<enumeration>>
-        STEP
         COIN
-        GEM
-        KEY
         DICE
+        KEY
+        GEM
+        STEP
         SHOVEL
-        HAMMER
         METAL_DETECTOR
+        HAMMER
         LOCK_PICK_KIT
         RABBIT_FOOT
     }
 
     %% ========================================
-    %% ITEM HIERARCHY - CONSUMABLES
+    %% ITEM HIERARCHY - COLLECTABLES
     %% ========================================
 
     class Step {
-        + name: str = "Step" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class Coin {
-        + name: str = "Coin" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class Gem {
-        + name: str = "Gem" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class Key {
-        + name: str = "Key" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class Dice {
-        + name: str = "Dice" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     %% ========================================
@@ -286,33 +335,18 @@ classDiagram
     %% ========================================
 
     class Shovel {
-        + name: str = "Shovel" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class Hammer {
-        + name: str = "Hammer" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class MetalDetector {
-        + name: str = "Metal Detector" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class LockPickKit {
-        + name: str = "Lock Pick Kit" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     class RabbitFoot {
-        + name: str = "Rabbit's Foot" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
     }
 
     %% ========================================
@@ -320,33 +354,23 @@ classDiagram
     %% ========================================
 
     class Apple {
-        + name: str = "Apple" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
+        + add_step: int = 2 <<default>>
     }
 
     class Banana {
-        + name: str = "Banana" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
+        + add_step: int = 3 <<default>>
     }
 
     class Cake {
-        + name: str = "Cake" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
+        + add_step: int = 10 <<default>>
     }
 
     class Sandwich {
-        + name: str = "Sandwich" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
+        + add_step: int = 15 <<default>>
     }
 
     class Meal {
-        + name: str = "Meal" <<class attribute>>
-        + __init__(count: int) <<create>>
-        + use(): bool
+        + add_step: int = 25 <<default>>
     }
 
     %% ========================================
@@ -355,22 +379,28 @@ classDiagram
 
     Renderable <|-- Game
     Renderable <|-- Room
-    
-    Item <|-- Step
-    Item <|-- Coin
-    Item <|-- Gem
-    Item <|-- Key
-    Item <|-- Dice
-    Item <|-- Shovel
-    Item <|-- Hammer
-    Item <|-- MetalDetector
-    Item <|-- LockPickKit
-    Item <|-- RabbitFoot
-    Item <|-- Apple
-    Item <|-- Banana
-    Item <|-- Cake
-    Item <|-- Sandwich
-    Item <|-- Meal
+
+    Item <|-- Food
+    Item <|-- Collectable
+    Item <|-- PermanentItem
+
+    Collectable <|-- Step
+    Collectable <|-- Coin
+    Collectable <|-- Gem
+    Collectable <|-- Key
+    Collectable <|-- Dice
+
+    PermanentItem <|-- Shovel
+    PermanentItem <|-- Hammer
+    PermanentItem <|-- MetalDetector
+    PermanentItem <|-- LockPickKit
+    PermanentItem <|-- RabbitFoot
+
+    Food <|-- Apple
+    Food <|-- Banana
+    Food <|-- Cake
+    Food <|-- Sandwich
+    Food <|-- Meal
 
     %% ========================================
     %% COMPOSITION RELATIONSHIPS (Strong ownership)
@@ -379,6 +409,9 @@ classDiagram
     Game *-- Map
     Game *-- Player
     Game *-- GameState
+    Game *-- GameRenderer
+    Game *-- InputHandler
+    Game *-- RoomInteractionHandler
     Map *-- Room
     Map *-- RoomLoader
     Room *-- Position
@@ -395,6 +428,14 @@ classDiagram
     Game ..> Renderer : uses
     Game ..> DisplayHelper : uses
     Game ..> Drawables : uses
+    GameRenderer ..> Game : uses
+    GameRenderer ..> Renderer : uses
+    GameRenderer ..> DisplayHelper : uses
+    GameRenderer ..> Drawables : uses
+    GameRenderer ..> Room : uses
+    InputHandler ..> Game : uses
+    RoomInteractionHandler ..> Game : uses
+    RoomInteractionHandler ..> Chest : uses
     Room ..> Renderer : uses
     Room ..> DisplayHelper : uses
     Map ..> DisplayHelper : uses
