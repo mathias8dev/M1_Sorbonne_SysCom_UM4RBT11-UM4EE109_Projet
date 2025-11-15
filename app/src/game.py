@@ -49,6 +49,37 @@ class Game(Renderable):
         """Get the room at the player's current position."""
         return self.map.get_room(self.player.position)
 
+    def _restart_game(self):
+        """Restart the game by resetting all game state."""
+        # Reinitialize map and player
+        self.map = Map(width=5, height=9, display_helper=self.display_helper)
+        self.map.generate_map_progressive()
+
+        # Reset player to starting position
+        self.player = Player(position=Position(2, 8))
+
+        # Mark starting room as visited
+        entrance_room = self.map.get_room(self.player.position)
+        if entrance_room:
+            entrance_room.visited = True
+
+        # Initialize door locks for all pre-placed rooms
+        for y in range(self.map.height):
+            for x in range(self.map.width):
+                room = self.map.rooms[y][x]
+                if room:
+                    self._initialize_door_locks(room)
+
+        # Reset game state
+        self.game_state = GameState.ENTER_ROOM
+        self.room_pool = []
+        self.selected_room_index = 0
+        self.selected_direction = None
+        self.pending_room_position = None
+        self.status_message = None
+
+        AppLogger.i("Game restarted!")
+
     def check_win_condition(self) -> bool:
         """Check if the player has reached the Antechamber."""
         current_room = self.get_current_room()
@@ -581,8 +612,17 @@ class Game(Renderable):
 
     def handle_keyboard_event(self, event):
         """Handle keyboard input based on current game state."""
+        import pygame
 
+        # Handle game over/victory popup input
         if self.game_state == GameState.GAME_OVER or self.game_state == GameState.VICTORY:
+            if event.key == pygame.K_r:  # R for restart
+                self._restart_game()
+                return
+            elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:  # Q or ESC for quit
+                pygame.quit()
+                import sys
+                sys.exit()
             return
 
         # Check win/lose conditions
@@ -1056,6 +1096,68 @@ class Game(Renderable):
         else:
             AppLogger.w("You don't have a shovel!")
 
+    def _draw_popup(self, renderer: 'Renderer', title: str, message: str):
+        """Draw a popup dialog with title, message, and restart/quit options.
+
+        Args:
+            renderer: The renderer to draw with
+            title: The popup title (e.g., "VICTORY!" or "GAME OVER")
+            message: The message to display
+        """
+        if not self.display_helper:
+            return
+
+        # Draw semi-transparent overlay over entire screen
+        overlay_color = Color(0, 0, 0, 180)  # Black with ~70% opacity
+        renderer.draw_overlay(overlay_color)
+
+        # Popup dimensions (centered on screen)
+        popup_width = 600
+        popup_height = 300
+        popup_x = (self.display_helper.SCREEN_WIDTH - popup_width) // 2
+        popup_y = (self.display_helper.SCREEN_HEIGHT - popup_height) // 2
+
+        # Draw realistic mobile-style shadow with rounded corners
+        popup_rect = Rectangle(popup_x, popup_y, popup_width, popup_height)
+        corner_radius = 15  # Rounded corners radius
+        shadow_color = Color(0, 0, 0, 20)  # Semi-transparent black
+        renderer.draw_shadow(
+            popup_rect,
+            blur_radius=10,           # Larger blur for softer shadow
+            shadow_color=shadow_color,
+            border_radius=corner_radius,
+            offset_x=0,               # No horizontal offset
+            offset_y=0                # Downward offset (light from top)
+        )
+
+        # Draw popup background with rounded corners
+        popup_bg_color = Color(245, 245, 245)  # Very light gray
+        popup_border_color = Color(60, 60, 60)  # Dark gray
+        renderer.draw_rectangle(popup_rect, popup_bg_color, popup_border_color, 3, border_radius=corner_radius)
+
+        # Draw title
+        title_color = Color(200, 50, 50) if "GAME OVER" in title else Color(50, 150, 50)
+        title_x = popup_x + (popup_width // 2) - (len(title) * 10)  # Rough centering
+        title_y = popup_y + 40
+        renderer.display_text(title, title_color, 48, Position(title_x, title_y))
+
+        # Draw message
+        message_x = popup_x + (popup_width // 2) - (len(message) * 6)  # Rough centering
+        message_y = popup_y + 120
+        renderer.display_text(message, black_color, 24, Position(message_x, message_y))
+
+        # Draw instructions
+        instruction1 = "Press R to Restart"
+        instruction2 = "Press Q or ESC to Quit"
+
+        inst1_x = popup_x + (popup_width // 2) - (len(instruction1) * 6)
+        inst1_y = popup_y + 190
+        renderer.display_text(instruction1, black_color, 22, Position(inst1_x, inst1_y))
+
+        inst2_x = popup_x + (popup_width // 2) - (len(instruction2) * 6)
+        inst2_y = popup_y + 230
+        renderer.display_text(instruction2, black_color, 22, Position(inst2_x, inst2_y))
+
     def _draw_game_status(self, renderer: 'Renderer'):
         """Draw game status messages at the bottom of the action area."""
         if not self.display_helper:
@@ -1065,19 +1167,10 @@ class Game(Renderable):
         status_y = self.display_helper.SCREEN_HEIGHT - 100
 
         if self.game_state == GameState.VICTORY:
-            renderer.display_text(
-                "VICTORY! You reached the Antechamber!",
-                black_color,
-                28,
-                Position(status_x, status_y)
-            )
+            self._draw_popup(renderer, "VICTORY!", "You reached the Antechamber!")
         elif self.game_state == GameState.GAME_OVER:
-            renderer.display_text(
-                "GAME OVER! You ran out of steps.",
-                black_color,
-                28,
-                Position(status_x, status_y)
-            )
+            reason = "You ran out of steps." if self.player.inventory[InventoryKey.STEP].count <= 0 else "No path to victory!"
+            self._draw_popup(renderer, "GAME OVER", reason)
         elif self.game_state == GameState.ENTER_ROOM:
             # Display status message if available, otherwise show default instructions
             if self.status_message:
