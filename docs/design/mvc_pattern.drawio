@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="26.0.11">
+  <diagram name="Page-1" id="E3pYC-JLdTRACSQtg_cf">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SIoxVCOx-Ak2111eatpp-14" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="10" y="190" width="767" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="SIoxVCOx-Ak2111eatpp-14" source="SIoxVCOx-Ak2111eatpp-3" target="SIoxVCOx-Ak2111eatpp-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="SIoxVCOx-Ak2111eatpp-14" source="SIoxVCOx-Ak2111eatpp-3" target="SIoxVCOx-Ak2111eatpp-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="SIoxVCOx-Ak2111eatpp-14" source="SIoxVCOx-Ak2111eatpp-3" target="SIoxVCOx-Ak2111eatpp-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="SIoxVCOx-Ak2111eatpp-14" source="SIoxVCOx-Ak2111eatpp-3" target="SIoxVCOx-Ak2111eatpp-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="280" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-2" value="Game (Orchestrateur)&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="315" y="20" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-4" value="&lt;ul&gt;&lt;li&gt;Logique métier principale&lt;/li&gt;&lt;li&gt;Machine d&#39;états (GameState)&lt;/li&gt;&lt;li&gt;Coordination des composants&lt;/li&gt;&lt;/ul&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="280" y="50" width="236" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-5" value="GameRenderer(VIEW)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry y="220" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-6" value="InputHandler(CONTROLLER)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="174" y="220" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-7" value="RoomInteractionHandler(CONTROLLER)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="365" y="220" width="245" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SIoxVCOx-Ak2111eatpp-8" value="Map + Player (MODEL)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="SIoxVCOx-Ak2111eatpp-14">
+          <mxGeometry x="627" y="220" width="140" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
