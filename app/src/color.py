@@ -25,7 +25,28 @@ class Color:
         return (self.red, self.green, self.blue)
 
     def __str__(self):
-        if self.alpha == 255:
-            return f"Color({self.red}, {self.green}, {self.blue})"
-        return f"Color({self.red}, {self.green}, {self.blue}, {self.alpha})"
-    
+        return f"Color(red={self.red}, green={self.green}, blue={self.blue}, alpha={self.alpha})"
+
+
+# Example usage / test
+if __name__ == '__main__':
+    from logging import AppLogger
+
+    AppLogger.i("Testing Color class...")
+
+    # Test opaque color
+    red = Color(255, 0, 0)
+    AppLogger.i(f"Red: {red}")
+    AppLogger.i(f"RGB tuple: {red.to_rgb_tuple()}")
+    AppLogger.i(f"RGBA tuple: {red.to_tuple()}")
+
+    # Test transparent color
+    semi_transparent_blue = Color(0, 0, 255, 128)
+    AppLogger.i(f"Semi-transparent blue: {semi_transparent_blue}")
+    AppLogger.i(f"RGB tuple: {semi_transparent_blue.to_rgb_tuple()}")
+    AppLogger.i(f"RGBA tuple: {semi_transparent_blue.to_tuple()}")
+
+    # Test default alpha
+    green = Color(0, 255, 0)
+    AppLogger.i(f"Green (default alpha): {green}")
+    assert green.alpha == 255, "Default alpha should be 255"

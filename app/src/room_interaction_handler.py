@@ -116,3 +116,50 @@ class RoomInteractionHandler:
             self.game.game_state = GameState.ENTER_ROOM
         else:
             AppLogger.w("You don't have a shovel!")
+
+
+# Example usage / test
+if __name__ == '__main__':
+    from game import Game
+    from display_helper import DisplayHelper
+    from chest import Chest
+    from items import Coin, Gem, Key
+
+    AppLogger.i("Testing RoomInteractionHandler...")
+
+    # Create display helper and game
+    display_helper = DisplayHelper(1800, 900)
+    game = Game(display_helper)
+
+    AppLogger.i("✓ RoomInteractionHandler initialized successfully!")
+    AppLogger.i(f"Handler attached to game: {game.room_interaction_handler is not None}")
+
+    # Test chest interaction
+    current_room = game.get_current_room()
+    if current_room:
+        # Add a chest to the current room
+        chest = Chest()
+        chest.add_item(Coin(count=10))
+        chest.add_item(Gem(count=2))
+        current_room.chest = chest
+
+        AppLogger.i(f"Added chest to {current_room.name}")
+        AppLogger.i(f"Chest contents: {len(chest.contents)} items")
+
+        # Give player a key
+        game.player.take_item(Key())
+        AppLogger.i(f"Player has key: {game.player.has_item(InventoryKey.KEY)}")
+
+        # Test opening chest
+        initial_coins = game.player.inventory[InventoryKey.COIN].count
+        game.room_interaction_handler.open_chest_with_key()
+
+        if chest.is_opened:
+            AppLogger.i("Chest opened successfully!")
+            AppLogger.i(f"Player coins: {initial_coins} → {game.player.inventory[InventoryKey.COIN].count}")
+        else:
+            AppLogger.w("Failed to open chest")
+
+    # Test room interaction check
+    game.room_interaction_handler.check_room_interactions()
+    AppLogger.i("Room interaction check completed")

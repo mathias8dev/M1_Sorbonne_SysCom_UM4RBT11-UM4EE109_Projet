@@ -11,10 +11,13 @@ class Item(ABC):
     def __init__(self, count : int):
         self.count = count
     def use(self) -> bool:
-        pass 
-    
+        pass
+
     def add(self, count : int):
         self.count += count
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(count={self.count})"
         
     
 class Food(Item) :
@@ -26,6 +29,10 @@ class Food(Item) :
             self.count = self.count - 1
             return True
         return False
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(count={self.count}, add_step={self.add_step})"
+
     
             
 class PermanentItem(Item):

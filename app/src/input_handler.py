@@ -138,3 +138,34 @@ class InputHandler:
                 AppLogger.i("Skipped digging")
                 self.game._pending_interaction = None
                 self.game.game_state = GameState.ENTER_ROOM
+
+
+# Example usage / test
+if __name__ == '__main__':
+    from game import Game
+    from display_helper import DisplayHelper
+    import pygame
+
+    AppLogger.i("Testing InputHandler...")
+
+    # Create display helper and game
+    display_helper = DisplayHelper(1800, 900)
+    game = Game(display_helper)
+
+    AppLogger.i("InputHandler initialized successfully!")
+    AppLogger.i(f"Handler attached to game: {game.input_handler is not None}")
+    AppLogger.i(f"Initial game state: {game.game_state}")
+
+    # Test movement input simulation
+    class MockEvent:
+        def __init__(self, key):
+            self.key = key
+
+    # Simulate pressing 'Z' (up)
+    game.input_handler._handle_movement_input(MockEvent(pygame.K_z))
+    AppLogger.i(f"After pressing Z: selected_direction = {game.selected_direction}")
+
+    # Simulate pressing 'D' (right)
+    game.input_handler._handle_movement_input(MockEvent(pygame.K_d))
+    AppLogger.i(f"After pressing D: selected_direction = {game.selected_direction}")
+

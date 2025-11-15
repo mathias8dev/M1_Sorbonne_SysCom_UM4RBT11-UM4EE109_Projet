@@ -83,6 +83,52 @@ class Player:
     def select_item(self, item_key: InventoryKey):
         """Select an item from the inventory."""
         self.current_selected_item = self.inventory.get(item_key, None)
+
     def get_stats(self) -> Dict[InventoryKey, Item]:
         """Return a dictionary of the player's stats."""
         return self.inventory
+
+    def __str__(self):
+        return f"Player(position={self.position}, steps={self.inventory[InventoryKey.STEP].count})"
+
+
+
+# Example usage / test
+if __name__ == '__main__':
+    from logging import AppLogger
+    from position import Position
+    from items import Coin, Key, Step
+
+    AppLogger.i("Testing Player class...")
+
+    # Create player
+    start_pos = Position(2, 8)
+    player = Player(position=start_pos)
+    AppLogger.i(f"Created player at {player.position}")
+
+    # Check initial inventory
+    AppLogger.i(f"Initial steps: {player.inventory[InventoryKey.STEP].count}")
+    AppLogger.i(f"Initial coins: {player.inventory[InventoryKey.COIN].count}")
+    assert player.inventory[InventoryKey.STEP].count == 70
+
+    # Test movement
+    new_pos = Position(2, 7)
+    player.move_to(new_pos)
+    AppLogger.i(f"Moved to {player.position}")
+    AppLogger.i(f"Steps after move: {player.inventory[InventoryKey.STEP].count}")
+    assert player.inventory[InventoryKey.STEP].count == 69
+
+    # Test taking items
+    player.take_item(Coin(count=10))
+    AppLogger.i(f"Coins after taking: {player.inventory[InventoryKey.COIN].count}")
+
+    # Test has_item
+    has_key = player.has_item(InventoryKey.KEY)
+    AppLogger.i(f"Has key: {has_key}")
+
+    # Give player a key and test again
+    player.take_item(Key())
+    has_key = player.has_item(InventoryKey.KEY)
+    AppLogger.i(f"Has key after adding: {has_key}")
+    assert has_key
+

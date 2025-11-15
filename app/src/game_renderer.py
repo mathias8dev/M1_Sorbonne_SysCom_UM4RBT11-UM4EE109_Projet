@@ -465,3 +465,35 @@ class GameRenderer:
             renderer.display_text("←", trophy_color, arrow_size, Position(room_x - 40, room_center_y - 15))
         elif self.game.selected_direction == "right":
             renderer.display_text("→", trophy_color, arrow_size, Position(room_x + self.game.display_helper.ROOM_SIZE + 10, room_center_y - 15))
+
+
+# Example usage / test
+if __name__ == '__main__':
+    from game import Game
+    from display_helper import DisplayHelper
+    import pygame
+
+    AppLogger.i("Testing GameRenderer...")
+
+    # Initialize pygame
+    pygame.init()
+
+    # Create display helper and game
+    display_helper = DisplayHelper(1800, 900)
+    game = Game(display_helper)
+
+    # Create screen and renderer
+    screen = pygame.display.set_mode((display_helper.SCREEN_WIDTH, display_helper.SCREEN_HEIGHT))
+    from renderer import Renderer
+    renderer = Renderer(screen)
+
+    # Test rendering
+    game.game_renderer.render(renderer)
+    pygame.display.flip()
+
+    AppLogger.i("GameRenderer initialized successfully!")
+    AppLogger.i(f"Game state: {game.game_state}")
+    AppLogger.i(f"Player position: {game.player.position}")
+    AppLogger.i(f"Current room: {game.get_current_room().name if game.get_current_room() else 'None'}")
+
+    pygame.quit()

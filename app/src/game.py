@@ -565,6 +565,49 @@ class Game(Renderable):
         room.lock_level = lock_level if has_any_door else 0
 
 
+# Example usage / test
+if __name__ == '__main__':
+    from logging import AppLogger
+    from display_helper import DisplayHelper
+
+    AppLogger.i("Testing Game class...")
+
+    # Create display helper
+    display_helper = DisplayHelper(1800, 900)
+
+    # Create game
+    game = Game(display_helper)
+    AppLogger.i("Game initialized successfully!")
+
+    # Check initial state
+    AppLogger.i(f"Game state: {game.game_state}")
+    AppLogger.i(f"Player position: {game.player.position}")
+
+    # Check current room
+    current_room = game.get_current_room()
+    AppLogger.i(f"Current room: {current_room.name if current_room else 'None'}")
+    assert current_room is not None
+    assert current_room.visited
+
+    # Check handlers
+    AppLogger.i(f"Has GameRenderer: {game.game_renderer is not None}")
+    AppLogger.i(f"Has InputHandler: {game.input_handler is not None}")
+    AppLogger.i(f"Has RoomInteractionHandler: {game.room_interaction_handler is not None}")
+    assert all([game.game_renderer, game.input_handler, game.room_interaction_handler])
+
+    # Check win/lose conditions
+    is_won = game.check_win_condition()
+    is_lost = game.check_lose_condition()
+    AppLogger.i(f"Won: {is_won}, Lost: {is_lost}")
+    assert not is_won  # Shouldn't win at start
+    assert not is_lost  # Shouldn't lose at start
+
+    # Test restart
+    game._restart_game()
+    AppLogger.i("Game restarted successfully!")
+
+
+
 
 
 
