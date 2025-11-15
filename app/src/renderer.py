@@ -17,9 +17,21 @@ class Renderer:
         surface = font.render(text, True, color.to_tuple())
         self.screen.blit(surface, position.to_tuple())
 
-    def draw_image(self, asset_path: str, rect: Rectangle):
+    def draw_image(self, asset_path: str, rect: Rectangle, rotation: int = 0):
+        """Draw an image with optional rotation.
+
+        Args:
+            asset_path: Path to the image file
+            rect: Rectangle defining position and size
+            rotation: Rotation angle in degrees (0, 90, 180, 270). Positive values rotate counter-clockwise.
+        """
         surface = pygame.image.load(asset_path).convert_alpha()
         surface = pygame.transform.smoothscale(surface, (rect.width, rect.height))
+
+        # Apply rotation if specified
+        if rotation != 0:
+            surface = pygame.transform.rotate(surface, rotation)
+
         self.screen.blit(surface, (rect.x, rect.y))
 
     def draw_rectangle(
