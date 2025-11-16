@@ -66,8 +66,6 @@ class Room(Renderable):
         Returns:
             Room: A new Room instance populated with data from the dictionary
         """
-
-        AppLogger.d(f"Instantiating the room with the display_helper {display_helper}")
         if position is None:
             position = Position(0, 0)
 
@@ -153,8 +151,6 @@ class Room(Renderable):
             self.display_helper.ROOM_SIZE,
             self.display_helper.ROOM_SIZE,
         )
-
-        AppLogger.d(f"Room rect is {rect}")
 
         stroke_color = room_stroke_visited_color if self.visited else room_stroke_default_color
         stroke_width = 4 if highlight else 2

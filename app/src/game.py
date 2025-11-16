@@ -335,40 +335,52 @@ class Game(Renderable):
         target_room = self.map.get_room(new_position)
 
         if target_room:
-            # Room already exists - check lock level from BOTH sides
-            # The effective lock level is the maximum of source and destination
-            effective_lock_level = max(source_lock_level, target_room.lock_level)
-
+            # Room already exists - check if we've visited before
             # If the target room has been visited, we can move back without unlocking
             if target_room.visited:
-                self.player.move_to(new_position)  # Still costs 1 step
-                AppLogger.i(f"Moved back to {target_room.name}")
-                self.selected_direction = None
-                # Don't re-trigger room interactions for visited rooms
+                # Moving to previously visited room - still costs 1 step but no lock check
+                if self.player.move_to(new_position):
+                    AppLogger.i(f"Moved back to {target_room.name}")
+                    self.selected_direction = None
+                    # Don't re-trigger room interactions for visited rooms
+                else:
+                    # Failed to move (not enough steps)
+                    AppLogger.w("Not enough steps to move!")
+                    self.status_message = "Not enough steps to move!"
+                    self.selected_direction = None
             else:
                 # First time visiting this room - need to unlock the door
+                # The effective lock level is the maximum of source and destination
+                effective_lock_level = max(source_lock_level, target_room.lock_level)
+                
                 if self._can_unlock_door(effective_lock_level):
-                    self.player.move_to(new_position)  # Costs 1 step
-                    target_room.visited = True
-                    AppLogger.i(f"Moved to {target_room.name}")
-                    self.selected_direction = None
-                    # Trigger room interactions after first entry
-                    self.room_interaction_handler.check_room_interactions()
+                    if self.player.move_to(new_position):  # Costs 1 step
+                        target_room.visited = True
+                        AppLogger.i(f"Moved to {target_room.name}")
+                        self.selected_direction = None
+                        # Trigger room interactions after first entry
+                        self.room_interaction_handler.check_room_interactions()
+                    else:
+                        # Failed to move (not enough steps)
+                        AppLogger.w("Not enough steps to move!")
+                        self.status_message = "Not enough steps to move!"
+                        self.selected_direction = None
                 else:
                     message = f"Door is locked (level {effective_lock_level}). Need a key!"
                     AppLogger.w(message)
                     self.status_message = message
+                    self.selected_direction = None
         else:
             # Need to choose a new room - only source lock level applies here
             if self._can_unlock_door(source_lock_level):
                 self.pending_room_position = new_position
                 self._start_room_selection(entry_direction=self.selected_direction)
+                self.selected_direction = None
             else:
                 message = f"Door is locked (level {source_lock_level}). Need a key!"
                 AppLogger.w(message)
                 self.status_message = message
-
-        self.selected_direction = None
+                self.selected_direction = None
 
     def _can_unlock_door(self, lock_level: int) -> bool:
         """Check if player can unlock a door of given level."""
@@ -488,8 +500,15 @@ class Game(Renderable):
 
 
     def _confirm_room_selection(self):
-        """Confirm and place the selected room."""
-        if not self.room_pool or self.selected_room_index >= len(self.room_pool):
+        """Confirmer et placer la pièce sélectionnée."""
+        if not self.room_pool:
+            AppLogger.w("Aucune pièce disponible dans le pool")
+            return
+        
+        # Valider l'index sélectionné
+        if self.selected_room_index < 0 or self.selected_room_index >= len(self.room_pool):
+            AppLogger.w(f"Index de pièce invalide: {self.selected_room_index}")
+            self.selected_room_index = 0
             return
 
         selected_room = self.room_pool[self.selected_room_index]

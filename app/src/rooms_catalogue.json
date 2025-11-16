@@ -1,0 +1,425 @@
+[
+  {
+    "name": "Entrance Hall",
+    "image": "app/assets/rooms/001-012/Entrance_Hall_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": false,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "gem_cost": 0,
+    "rarity": 0,
+    "color": "blue",
+    "items": [],
+    "special_effect": {
+      "type": "start_room",
+      "description": "Pièce de départ du manoir"
+    },
+    "placement_condition": "start_only"
+  },
+
+  {
+    "name": "Antechamber",
+    "image": "app/assets/rooms/037-046/Antechamber_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "victory",
+      "description": "Atteindre cette pièce termine le jeu avec succès"
+    },
+    "placement_condition": "end_only"
+  },
+  {
+    "name": "Attic",
+    "image": "app/assets/rooms/001-012/Attic_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "blue",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gold", "quantity": 8, "probability": 0.7 },
+      { "item_key": "Gem", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.5 },
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Chest", "quantity": 1, "probability": 0.25 },
+      { "item_key": "Digging_Spot", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "treasure_room",
+      "description": "Grenier - contient souvent des objets de valeur cachés"
+    },
+    "placement_condition": "edge_only"
+  },
+  {
+    "name": "Closet",
+    "image": "app/assets/rooms/001-012/Closet_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 5, "probability": 0.5 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "storage",
+      "description": "Placard - contient des objets utiles"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Billiard Room",
+    "image": "app/assets/rooms/001-012/Billiard_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gold", "quantity": 3, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Salle de billard - facilite les déplacements"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Gallery",
+    "image": "app/assets/rooms/001-012/Gallery_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Gem", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Galerie - beaucoup de portes pour faciliter l'exploration"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Parlor",
+    "image": "app/assets/rooms/001-012/Parlor_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.25 }
+    ],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Salon - pièce de passage"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Room 8",
+    "image": "app/assets/rooms/001-012/Room_8_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "orange",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [],
+    "special_effect": {
+      "type": "corridor_bonus",
+      "description": "Couloir de passage"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": false,
+      "left": true,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Apple", "quantity": 1, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "gain_steps",
+      "amount": 2,
+      "description": "Chambre - permet de récupérer des pas"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Boudoir",
+    "image": "app/assets/rooms/Bedrooms/Boudoir_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Mirror", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "gain_steps",
+      "amount": 1,
+      "description": "Boudoir - chambre élégante qui redonne de l'énergie"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Bunk Room",
+    "image": "app/assets/rooms/Bedrooms/Bunk_Room_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [],
+    "special_effect": {
+      "type": "double_bedroom",
+      "description": "Chambre à lits superposés - compte pour 2 chambres"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Guest Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Guest_Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Key", "quantity": 1, "probability": 0.2 }
+    ],
+    "special_effect": {
+      "type": "gain_steps_on_draw",
+      "amount": 10,
+      "description": "Chambre d'invité - donne des pas quand tirée"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Her Ladyship's Chamber",
+    "image": "app/assets/rooms/Bedrooms/Her_Ladyship%27s_Chamber_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 2,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Jewel", "quantity": 1, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "noble_chamber",
+      "description": "Chambre de Madame - effets bonus avec d'autres pièces nobles"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Master Bedroom",
+    "image": "app/assets/rooms/Bedrooms/Master_Bedroom_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": true,
+    "lock_level": 1,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gold", "quantity": 10, "probability": 0.6 }
+    ],
+    "special_effect": {
+      "type": "scaling_steps",
+      "description": "Chambre principale - plus de pièces = plus de pas"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Nursery",
+    "image": "app/assets/rooms/Bedrooms/Nursery_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 1,
+    "rarity": 1,
+    "items": [
+      { "item_key": "Toy", "quantity": 1, "probability": 0.4 }
+    ],
+    "special_effect": {
+      "type": "bedroom_synergy",
+      "description": "Nurserie - bonus quand d'autres chambres sont tirées"
+    },
+    "placement_condition": "any"
+  },
+
+  {
+    "name": "Servant's Quarters",
+    "image": "app/assets/rooms/Bedrooms/Servant%27s_Quarters_Icon.webp",
+    "doors": {
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 2,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Key", "quantity": 2, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "servant_bonus",
+      "description": "Quartiers des domestiques - génère des clés selon le nombre de chambres"
+    },
+    "placement_condition": "any"
+  },
+  {
+    "name": "Rotunda",
+    "image": "app/assets/rooms/001-012/Rotunda_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "blue",
+    "gem_cost": 1,
+    "rarity": 2,
+    "items": [
+      { "item_key": "Gem", "quantity": 1, "probability": 0.3 }
+    ],
+    "special_effect": {
+      "type": "rotation",
+      "description": "Rotonde - peut faire tourner le manoir pour changer les connexions"
+    },
+    "placement_condition": "center_preferred"
+  },
+  {
+    "name": "Spare Room",
+    "image": "app/assets/rooms/001-012/Spare_Room_Icon.webp",
+    "doors": {
+      "top": true,
+      "bottom": true,
+      "left": false,
+      "right": false
+    },
+    "doors_lock": false,
+    "lock_level": 0,
+    "color": "purple",
+    "gem_cost": 0,
+    "rarity": 0,
+    "items": [
+      { "item_key": "Chest", "quantity": 1, "probability": 0.4 },
+      { "item_key": "Key", "quantity": 1, "probability": 0.3 },
+      { "item_key": "Gold", "quantity": 3, "probability": 0.5 }
+    ],
+    "special_effect": {
+      "type": "storage_room",
+      "description": "Chambre de réserve - contient des objets stockés et récupère des pas"
+    },
+    "placement_condition": "any"
+  }
+
+]

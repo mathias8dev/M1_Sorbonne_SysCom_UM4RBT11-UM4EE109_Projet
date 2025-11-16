@@ -9,6 +9,7 @@ from logging import AppLogger
 class Renderer:
     def __init__(self, screen: pygame.surface.Surface):
         self.screen = screen
+        self._image_cache = {}  # Cache pour éviter de recharger les images à chaque frame
 
     def display_text(
         self, text: str, color: Color, font_size: float, position: Position, police: str = "Arial",
@@ -25,12 +26,22 @@ class Renderer:
             rect: Rectangle defining position and size
             rotation: Rotation angle in degrees (0, 90, 180, 270). Positive values rotate counter-clockwise.
         """
-        surface = pygame.image.load(asset_path).convert_alpha()
-        surface = pygame.transform.smoothscale(surface, (rect.width, rect.height))
+        # Clé de cache incluant le chemin, taille et rotation
+        cache_key = (asset_path, rect.width, rect.height, rotation)
+        
+        if cache_key not in self._image_cache:
+            # Charger et transformer l'image seulement si pas en cache
+            surface = pygame.image.load(asset_path).convert_alpha()
+            surface = pygame.transform.smoothscale(surface, (rect.width, rect.height))
 
-        # Apply rotation if specified
-        if rotation != 0:
-            surface = pygame.transform.rotate(surface, rotation)
+            # Appliquer la rotation si spécifiée
+            if rotation != 0:
+                surface = pygame.transform.rotate(surface, rotation)
+            
+            # Mettre en cache
+            self._image_cache[cache_key] = surface
+        else:
+            surface = self._image_cache[cache_key]
 
         self.screen.blit(surface, (rect.x, rect.y))
 
@@ -47,12 +58,10 @@ class Renderer:
             stroke_width: Border width in pixels (default: 0)
             border_radius: Corner radius in pixels (default: 0 for sharp corners)
         """
-        AppLogger.d(f"Drawing rectangle at {rect} with fill color {fill_color} and stroke color {stroke_color} and stroke width {stroke_width}")
         pygame_rect = pygame.Rect(rect.x, rect.y, rect.width, rect.height)
 
         # Draw fill with alpha support
         if fill_color:
-            AppLogger.d(f"Filling rectangle with color {fill_color}")
             if fill_color.alpha < 255:
                 # Use alpha-enabled surface for transparency
                 shape_surf = pygame.Surface(pygame_rect.size, pygame.SRCALPHA)
@@ -69,7 +78,6 @@ class Renderer:
 
         # Draw stroke with alpha support
         if stroke_color and stroke_width > 0:
-            AppLogger.d(f"Drawing rectangle stroke with color {stroke_color} and width {stroke_width}")
             if stroke_color.alpha < 255:
                 # Use alpha-enabled surface for transparency
                 shape_surf = pygame.Surface(pygame_rect.size, pygame.SRCALPHA)
@@ -117,8 +125,8 @@ class Renderer:
         if shadow_color is None:
             shadow_color = Color(0, 0, 0, 80)
 
-        # Draw multiple layers with Gaussian-like falloff for realistic blur
-        layers = max(8, blur_radius // 2)  # More layers for smoother blur
+        # Réduire le nombre de couches pour améliorer les performances
+        layers = min(4, max(2, blur_radius // 4))  # Moins de couches = plus rapide
 
         for i in range(layers, 0, -1):
             # Gaussian-like falloff: stronger near center, weaker at edges

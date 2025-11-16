@@ -33,16 +33,21 @@ class Player:
         self.position = position
         self.current_selected_item : Optional[Item] = None
 
-    def move_to(self, position : Position) :
+    def move_to(self, position : Position) -> bool:
         """Move player to a new position.
 
         Every movement costs 1 step, regardless of whether the room was visited before.
 
         Args:
             position: The position to move to
+            
+        Returns:
+            bool: True if movement was successful, False if not enough steps
         """
         if self.inventory[InventoryKey.STEP].use():
-            self.position = position 
+            self.position = position
+            return True
+        return False 
     
     def take_item(self, item : Item):
         """Add an item to the player's inventory."""

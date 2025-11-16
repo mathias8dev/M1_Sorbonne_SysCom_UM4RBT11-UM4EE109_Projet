@@ -96,7 +96,6 @@ class GameRenderer:
                 if room:
                     # Highlight if this is the player's current position
                     highlight = (x == self.game.player.position.x and y == self.game.player.position.y)
-                    AppLogger.d(f"Rendering room at {room.position} with highlight {highlight}")
                     room.render(renderer, highlight=highlight)
 
 
