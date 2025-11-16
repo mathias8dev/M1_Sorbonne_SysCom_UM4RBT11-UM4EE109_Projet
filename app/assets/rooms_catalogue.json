@@ -145,8 +145,8 @@
     "doors": {
       "top": true,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -401,7 +401,7 @@
     "name": "Spare Room",
     "image": "app/assets/rooms/001-012/Spare_Room_Icon.webp",
     "doors": {
-      "top": false,
+      "top": true,
       "bottom": true,
       "left": false,
       "right": false
@@ -495,10 +495,10 @@
     "name": "Ballroom",
     "image": "app/assets/rooms/013-024/Ballroom_Icon.webp",
     "doors": {
-      "top": false,
+      "top": true,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -541,8 +541,8 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -586,7 +586,7 @@
       "top": false,
       "bottom": true,
       "left": true,
-      "right": true
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -722,8 +722,8 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": true,
     "lock_level": 2,
@@ -745,7 +745,7 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": true,
+      "left": false,
       "right": false
     },
     "doors_lock": false,
@@ -934,10 +934,10 @@
     "name": "Study",
     "image": "app/assets/rooms/025-036/Study_Icon.webp",
     "doors": {
-      "top": true,
+      "top": false,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1102,10 +1102,10 @@
     "name": "Freezer",
     "image": "app/assets/rooms/037-046/Freezer_Icon.webp",
     "doors": {
-      "top": true,
+      "top": false,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1146,7 +1146,7 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": false,
+      "left": true,
       "right": false
     },
     "doors_lock": false,
@@ -1188,8 +1188,8 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": true,
-      "right": true
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1270,10 +1270,10 @@
     "name": "Morning Room",
     "image": "app/assets/rooms/GreenRooms/Morning_Room_Icon.webp",
     "doors": {
-      "top": true,
-      "bottom": false,
+      "top": false,
+      "bottom": true,
       "left": true,
-      "right": true
+      "right":false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1292,9 +1292,9 @@
     "image": "app/assets/rooms/GreenRooms/Patio_Icon.webp",
     "doors": {
       "top": false,
-      "bottom": false,
+      "bottom": true,
       "left": true,
-      "right": true
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1333,10 +1333,10 @@
     "name": "Terrace",
     "image": "app/assets/rooms/GreenRooms/Terrace_Icon.webp",
     "doors": {
-      "top": true,
-      "bottom": false,
-      "left": true,
-      "right": true
+      "top": false,
+      "bottom": true,
+      "left": false,
+      "right": false
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1355,7 +1355,7 @@
     "image": "app/assets/rooms/GreenRooms/Veranda_Icon.webp",
     "doors": {
       "top": true,
-      "bottom": false,
+      "bottom": true,
       "left": false,
       "right": false
     },
@@ -1376,7 +1376,7 @@
     "image": "app/assets/rooms/Hallways/Corridor_Icon.webp",
     "doors": {
       "top": true,
-      "bottom": false,
+      "bottom": true,
       "left": false,
       "right": false
     },
@@ -1396,7 +1396,7 @@
     "name": "East Wing Hall",
     "image": "app/assets/rooms/Hallways/East_Wing_Hall_Icon.webp",
     "doors": {
-      "top": true,
+      "top": false,
       "bottom": true,
       "left": true,
       "right": true
@@ -1440,8 +1440,8 @@
     "doors": {
       "top": true,
       "bottom": true,
-      "left": false,
-      "right": false
+      "left": true,
+      "right": true
     },
     "doors_lock": true,
     "lock_level": 1,
@@ -1459,7 +1459,7 @@
     "name": "Hallway",
     "image": "app/assets/rooms/Hallways/Hallway_Icon.webp",
     "doors": {
-      "top": true,
+      "top": false,
       "bottom": true,
       "left": true,
       "right": true
@@ -1522,7 +1522,7 @@
     "name": "West Wing Hall",
     "image": "app/assets/rooms/Hallways/West_Wing_Hall_Icon.webp",
     "doors": {
-      "top": true,
+      "top": false,
       "bottom": true,
       "left": true,
       "right": true
@@ -1544,9 +1544,9 @@
     "image": "app/assets/rooms/RedRooms/Archives_Icon.webp",
     "doors": {
       "top": true,
-      "bottom": false,
-      "left": false,
-      "right": false
+      "bottom": true,
+      "left": true,
+      "right": true
     },
     "doors_lock": false,
     "lock_level": 0,
@@ -1670,7 +1670,7 @@
     "image": "app/assets/rooms/RedRooms/Maid%27s_Chamber_Icon.webp",
     "doors": {
       "top": false,
-      "bottom": false,
+      "bottom": true,
       "left": true,
       "right": false
     },
@@ -1713,7 +1713,7 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": false,
+      "left": true,
       "right": false
     },
     "doors_lock": false,
@@ -1734,7 +1734,7 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": false,
+      "left": true,
       "right": false
     },
     "doors_lock": false,
@@ -1838,7 +1838,7 @@
     "image": "app/assets/rooms/Shops/Showroom_Icon.webp",
     "doors": {
       "top": true,
-      "bottom": false,
+      "bottom": true,
       "left": false,
       "right": false
     },
@@ -1860,7 +1860,7 @@
     "doors": {
       "top": false,
       "bottom": true,
-      "left": false,
+      "left": true,
       "right": false
     },
     "doors_lock": false,
